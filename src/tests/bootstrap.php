@@ -12,16 +12,16 @@
 define('WEB_SERVER_HOST', 'localhost');
 define('WEB_SERVER_PORT', 8001);
 
-//UNIX string 'php -S %s:%d -t %s %s >%s 2>&1 & echo $!'
+//'START /MIN php -S %s:%d -t %s > null 2>&1 '
+//UNIX string 'php -S %s:%d -t %s >/dev/null 2>&1 & echo $!'
 
 $command = sprintf(
-    'START /MIN php -S %s:%d -t %s > null 2>&1 ',//Windows string
+    'php -S %s:%d -t %s >/dev/null 2>&1 & echo $!',
     WEB_SERVER_HOST,
     WEB_SERVER_PORT,
     realpath(__DIR__ . '/../tests/')
 );
 
-echo $command;
 // Execute the command and store the process ID
 $output = array();
 exec($command, $output);
