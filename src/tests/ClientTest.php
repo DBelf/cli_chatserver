@@ -35,7 +35,7 @@ class ClientTest extends TestCase
     }
 
     /** @test */
-    public function it_should_display_multiple_clients(){
+    public function it_should_display_multiple_other_users(){
         $response = $this->client->request('GET', '/users');
 
         $this->assertEquals(200, $response->getStatusCode());

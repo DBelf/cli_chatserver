@@ -37,17 +37,17 @@ use PDOException;
 
 class DatabaseWrapper
 {
-    private $dbh;
-    private $statement;
+    private $_dbh;
+    private $_statement;
 
     /**
      * DatabaseWrapper constructor.
      */
     public function __construct() {
         try {
-            $this->dbh = new PDO('sqlite::memory:');
-            $this->dbh->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
-            $this->dbh->setAttribute(PDO::ATTR_EMULATE_PREPARES, false);
+            $this->_dbh = new PDO('sqlite::memory:');
+            $this->_dbh->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
+            $this->_dbh->setAttribute(PDO::ATTR_EMULATE_PREPARES, false);
         } catch (PDOException $e) {
             echo $e->getMessage();
         }
@@ -76,17 +76,17 @@ class DatabaseWrapper
               FOREIGN KEY(message_id) REFERENCES Messages(id));"
         );
         try {
-            $this->dbh->beginTransaction();
+            $this->_dbh->beginTransaction();
 
             foreach ($tables as $table) {
-                $this->statement = $this->dbh->prepare($table);
-                $this->statement->execute();
+                $this->_statement = $this->_dbh->prepare($table);
+                $this->_statement->execute();
             }
 
-            $this->dbh->commit();
+            $this->_dbh->commit();
         } catch (PDOException $e) {
             echo $e->getMessage();
-            $this->dbh->rollBack();
+            $this->_dbh->rollBack();
         }
     }
 
@@ -104,23 +104,23 @@ class DatabaseWrapper
      */
     public function insert_message($sender_id, $receiver_id, $body) {
         try {
-            $this->dbh->beginTransaction();
-            $this->statement = $this->dbh->prepare(
+            $this->_dbh->beginTransaction();
+            $this->_statement = $this->_dbh->prepare(
                 "INSERT INTO Messages (sender, receiver, body, timestamp)
                           VALUES(:sender_id, :receiver_id, :body, CURRENT_TIMESTAMP)"
             );
-            $this->statement->execute(array(
+            $this->_statement->execute(array(
                'sender_id' => $sender_id,
                 'receiver_id' => $receiver_id,
                 'body' => $body
             ));
 
-            $message_id = $this->dbh->lastInsertId();
+            $message_id = $this->_dbh->lastInsertId();
             $this->insert_unread($receiver_id, $message_id);
-            $this->dbh->commit();
+            $this->_dbh->commit();
         } catch (PDOException $e) {
             echo $e->getMessage();
-            $this->dbh->rollBack();
+            $this->_dbh->rollBack();
         }
     }
 
@@ -132,10 +132,10 @@ class DatabaseWrapper
      * @param $message_id the Message table foreign key corresponding to the unread message.
      */
     public function insert_unread($user_id, $message_id) {
-        $this->statement = $this->dbh->prepare(
+        $this->_statement = $this->_dbh->prepare(
             "INSERT INTO Unread (user_id, message_id) VALUES(:user_id, :message_id)"
         );
-        $this->statement->execute(array(
+        $this->_statement->execute(array(
             'user_id' => $user_id,
             'message_id' => $message_id
         ));
@@ -148,10 +148,10 @@ class DatabaseWrapper
      * @param $username a string containing the username.
      */
     public function insert_user($username) {
-        $this->statement = $this->dbh->prepare(
+        $this->_statement = $this->_dbh->prepare(
             "INSERT INTO Users (username) VALUES(:username)"
         );
-        $this->statement->execute(array(
+        $this->_statement->execute(array(
             'username' => $username
         ));
     }
@@ -161,35 +161,25 @@ class DatabaseWrapper
      * @return mixed
      */
     public function retrieve_user_by_name($username) {
-        $this->statement = $this->dbh->prepare(
+        $this->_statement = $this->_dbh->prepare(
             "SELECT * FROM Users WHERE username = :username"
         );
-        $this->statement->execute(array('username' => $username));
-        return $this->statement->fetch();
+        $this->_statement->execute(array('username' => $username));
+        return $this->_statement->fetch();
     }
 
     //FIXME Should only retrieve the unread messages!
     public function retrieve_unread($receiver_name) {
-        try {
-            $this->dbh->beginTransaction();
-            $this->statement = $this->dbh->prepare(
-                "SELECT m.id, m.receiver, m.body, m.timestamp, u.username as sender_name 
-                        FROM Messages m 
-                        INNER JOIN Users u ON u.id = m.sender
-                        INNER JOIN Unread ur ON ur.message_id = m.id
-                        WHERE m.receiver IN (SELECT id FROM Users WHERE username = :receiver_name)"
-            );
-            $this->statement->execute(array('receiver_name' => $receiver_name));
-            $result = $this->statement->fetchAll();
-            foreach($result as $row) {
-                $this->remove_from_unread($row['id']);
-            }
-            $this->dbh->commit();
-            return $result;
-        } catch (PDOException $e) {
-            echo $e->getMessage();
-            $this->dbh->rollBack();
-        }
+        $this->_statement = $this->_dbh->prepare(
+            "SELECT m.id, m.receiver, m.body, m.timestamp, u.username as sender_name 
+                    FROM Messages m 
+                    INNER JOIN Users u ON u.id = m.sender
+                    INNER JOIN Unread ur ON ur.message_id = m.id
+                    WHERE m.receiver IN (SELECT id FROM Users WHERE username = :receiver_name)"
+        );
+        $this->_statement->execute(array('receiver_name' => $receiver_name));
+        $result = $this->_statement->fetchAll();
+        return $result;
     }
 
     /**
@@ -198,11 +188,11 @@ class DatabaseWrapper
      *
      * @param $message_id the Messages foreign key of the row that has to be removed.
      */
-    private function remove_from_unread($message_id){
-        $this->statement = $this->dbh->prepare(
+    public function remove_from_unread($message_id){
+        $this->_statement = $this->_dbh->prepare(
             "DELETE FROM Unread WHERE message_id = :message_id"
         );
-        $this->statement->execute(array('message_id' => $message_id));
+        $this->_statement->execute(array('message_id' => $message_id));
     }
 
     /**
@@ -212,43 +202,43 @@ class DatabaseWrapper
      * @param $username the username of the row that has to be removed from the Users table.
      */
     public function delete_user($username) {
-        $this->statement = $this->dbh->prepare(
+        $this->_statement = $this->_dbh->prepare(
             "DELETE FROM Users WHERE username = :username"
         );
-        $this->statement->execute(array('username' => $username));
+        $this->_statement->execute(array('username' => $username));
     }
 
     /**
      * @return integer indicates the number of entries in the Users table.
      */
     public function total_users() {
-        $this->statement = $this->dbh->prepare(
+        $this->_statement = $this->_dbh->prepare(
             "SELECT Count(*) FROM Users"
         );
-        $this->statement->execute();
-        return $this->statement->fetchColumn();
+        $this->_statement->execute();
+        return $this->_statement->fetchColumn();
     }
 
     /**
      * @return integer indicates the number of entries in the Messages table.
      */
     public function total_messages() {
-        $this->statement = $this->dbh->prepare(
+        $this->_statement = $this->_dbh->prepare(
             "SELECT Count(*) FROM Messages"
         );
-        $this->statement->execute();
-        return $this->statement->fetchColumn();
+        $this->_statement->execute();
+        return $this->_statement->fetchColumn();
     }
 
     /**
      * @return integer indicates the number of entries in the Unread table.
      */
     public function total_unread() {
-        $this->statement = $this->dbh->prepare(
+        $this->_statement = $this->_dbh->prepare(
             "SELECT Count(*) FROM Unread"
         );
-        $this->statement->execute();
-        return $this->statement->fetchColumn();
+        $this->_statement->execute();
+        return $this->_statement->fetchColumn();
     }
 
 
