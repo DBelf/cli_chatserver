@@ -9,7 +9,7 @@
  * ------------------
  * id username
  *
- * Messages table
+ * MessagesModel table
  * ------------------
  * id sender receiver body timestamp
  *
@@ -19,7 +19,7 @@
  *
  *
  * Users are added with their usernames.
- * Messages are added by keeping track of the sender, recipient, body and timestamp.
+ * MessagesModel are added by keeping track of the sender, recipient, body and timestamp.
  * The recipient and message id are used to track all the unread messages of a user.
  *
  * @package    ChatAssignment
@@ -63,7 +63,7 @@ class DatabaseWrapper
             "CREATE TABLE IF NOT EXISTS Users (
               id INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL,
               username VARCHAR);",
-            "CREATE TABLE IF NOT EXISTS Messages (
+            "CREATE TABLE IF NOT EXISTS MessagesModel (
               id INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL,
               sender INTEGER,
               receiver INTEGER,
@@ -73,7 +73,7 @@ class DatabaseWrapper
               user_id INTEGER,
               message_id INTEGER,
               FOREIGN KEY(user_id) REFERENCES Users(id),
-              FOREIGN KEY(message_id) REFERENCES Messages(id));"
+              FOREIGN KEY(message_id) REFERENCES MessagesModel(id));"
         );
         try {
             $this->_dbh->beginTransaction();
@@ -92,7 +92,7 @@ class DatabaseWrapper
 
     /**
      *
-     * This function inserts the message into the Messages table.
+     * This function inserts the message into the MessagesModel table.
      * Another call is done to the @see DatabaseWrapper::insert_unread() to insert the corresponding keys into
      * the Unread table.
      * The functionality of the queries is wrapped in a transaction because both queries have to be completed
@@ -106,7 +106,7 @@ class DatabaseWrapper
         try {
             $this->_dbh->beginTransaction();
             $this->_statement = $this->_dbh->prepare(
-                "INSERT INTO Messages (sender, receiver, body, timestamp)
+                "INSERT INTO MessagesModel (sender, receiver, body, timestamp)
                           VALUES(:sender_id, :receiver_id, :body, CURRENT_TIMESTAMP)"
             );
             $this->_statement->execute(array(
@@ -182,7 +182,7 @@ class DatabaseWrapper
     public function retrieve_unread($receiver_name) {
         $this->_statement = $this->_dbh->prepare(
             "SELECT m.id, m.receiver, m.body, m.timestamp, u.username as sender_name 
-                    FROM Messages m 
+                    FROM MessagesModel m 
                     INNER JOIN Users u ON u.id = m.sender
                     INNER JOIN Unread ur ON ur.message_id = m.id
                     WHERE m.receiver IN (SELECT id FROM Users WHERE username = :receiver_name)"
@@ -196,7 +196,7 @@ class DatabaseWrapper
      *
      * Deletes a row from the Unread table.
      *
-     * @param integer $message_id the Messages foreign key of the row that has to be removed.
+     * @param integer $message_id the MessagesModel foreign key of the row that has to be removed.
      */
     public function remove_from_unread($message_id){
         $this->_statement = $this->_dbh->prepare(
@@ -230,11 +230,11 @@ class DatabaseWrapper
     }
 
     /**
-     * @return integer indicates the number of entries in the Messages table.
+     * @return integer indicates the number of entries in the MessagesModel table.
      */
     public function total_messages() {
         $this->_statement = $this->_dbh->prepare(
-            "SELECT Count(*) FROM Messages"
+            "SELECT Count(*) FROM MessagesModel"
         );
         $this->_statement->execute();
         return $this->_statement->fetchColumn();
