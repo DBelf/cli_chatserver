@@ -24,5 +24,4 @@ class Request
         $this->payload = json_decode($payload, true);
     }
 
-
 }

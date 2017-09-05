@@ -16,7 +16,7 @@ define('WEB_SERVER_PORT', 8001);
 //UNIX string 'php -S %s:%d -t %s >/dev/null 2>&1 & echo $!'
 
 $command = sprintf(
-    'php -S %s:%d -t %s >/dev/null 2>&1 & echo $!',
+    'START /MIN php -S %s:%d -t %s > null 2>&1 ',
     WEB_SERVER_HOST,
     WEB_SERVER_PORT,
     realpath(__DIR__ . '/../tests/')
