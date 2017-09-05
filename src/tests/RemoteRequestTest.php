@@ -13,11 +13,9 @@ namespace ChatApplication\tests;
 require(__DIR__ . '/../../vendor/autoload.php');
 
 use function explode;
-use function json_decode;
 use function json_encode;
 use PHPUnit\Framework\TestCase;
 use ChatApplication\Client\RemoteRequest;
-use function print_r;
 use function urldecode;
 
 class RemoteRequestTest extends TestCase

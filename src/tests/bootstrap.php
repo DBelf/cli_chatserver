@@ -1,8 +1,10 @@
 <?php
 /**
- * Short description for file
+ * Starts up a PHP server on localhost:8001.
  *
- * Long description for file (if any)...
+ * This webserver is used to test cURL requests issued by the RemoteRequest.php class.
+ *
+ * Based off http://tech.vg.no/2013/07/19/using-phps-built-in-web-server-in-your-test-suites/
  *
  * @package    bunq_assignment
  * @author     Dimitri
@@ -12,8 +14,8 @@
 define('WEB_SERVER_HOST', 'localhost');
 define('WEB_SERVER_PORT', 8001);
 
-//'START /MIN php -S %s:%d -t %s > null 2>&1 '
-//UNIX string 'php -S %s:%d -t %s >/dev/null 2>&1 & echo $!'
+//Windows command 'START /MIN php -S %s:%d -t %s > null 2>&1 '
+//UNIX command 'php -S %s:%d -t %s >/dev/null 2>&1 & echo $!'
 
 $command = sprintf(
     'START /MIN php -S %s:%d -t %s > null 2>&1 ',

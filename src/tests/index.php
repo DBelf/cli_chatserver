@@ -13,13 +13,17 @@
 /*
  * The GET request uses URL decoding to send JSON payloads so the response is different.
  */
-switch ($_SERVER['REQUEST_METHOD']){
-    case 'GET':
-        echo $_SERVER['REQUEST_METHOD'] . $_SERVER['REQUEST_URI'];
-        break;
-    default:
-        $request_body = file_get_contents('php://input');
-        echo $_SERVER['REQUEST_METHOD'] . $_SERVER['REQUEST_URI'] . '/' . $request_body;
-        break;
+
+function parse_request(){
+    switch ($_SERVER['REQUEST_METHOD']){
+        case 'GET':
+            echo $_SERVER['REQUEST_METHOD'] . $_SERVER['REQUEST_URI'];
+            break;
+        default:
+            $request_body = file_get_contents('php://input');
+            echo $_SERVER['REQUEST_METHOD'] . $_SERVER['REQUEST_URI'] . '/' . $request_body;
+            break;
+    }
 }
 
+parse_request();

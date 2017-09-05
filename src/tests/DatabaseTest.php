@@ -14,7 +14,6 @@ require_once(__DIR__ . '/../../vendor/autoload.php');
 
 use PHPUnit\Framework\TestCase;
 use ChatApplication\Server\DatabaseWrapper;
-use function print_r;
 
 class DatabaseTest extends TestCase
 {

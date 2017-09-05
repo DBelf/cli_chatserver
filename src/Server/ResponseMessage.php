@@ -8,10 +8,10 @@
  * @author     Dimitri
  */
 
-namespace ChatApplication;
+namespace ChatApplication\Server;
 
 
-class Messages
+class ResponseMessage
 {
 
 }

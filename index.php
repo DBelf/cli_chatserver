@@ -8,7 +8,12 @@
  * @author     Dimitri
  */
 require_once(__DIR__ . '/vendor/autoload.php');
+
 use ChatApplication\Server\Request;
 
-$payload = file_get_contents('php://input');
-$request = new Request($_SERVER['REQUEST_URI'], $_SERVER['REQUEST_METHOD'], $payload);
+function parse_request() {
+    $payload = file_get_contents('php://input');
+    $request = new Request($_SERVER['REQUEST_URI'], $_SERVER['REQUEST_METHOD'], $payload);
+}
+
+parse_request();

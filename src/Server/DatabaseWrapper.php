@@ -98,9 +98,9 @@ class DatabaseWrapper
      * The functionality of the queries is wrapped in a transaction because both queries have to be completed
      * to ensure the server can retrieve the list of unread messages.
      *
-     * @param $sender_id the id from the Users table of the original sender of the message.
-     * @param $receiver_id the id from the Users of the recipient of the message.
-     * @param $body the plaintext body of the message.
+     * @param integer $sender_id the id from the Users table of the original sender of the message.
+     * @param integer $receiver_id the id from the Users of the recipient of the message.
+     * @param string $body the plaintext body of the message.
      */
     public function insert_message($sender_id, $receiver_id, $body) {
         try {
@@ -126,10 +126,10 @@ class DatabaseWrapper
 
     /**
      *
-     * This function adds an entry to the Unread table.
+     * Adds a message to the Unread table.
      *
-     * @param $user_id the Users table foreign key corresponding to the unread message.
-     * @param $message_id the Message table foreign key corresponding to the unread message.
+     * @param integer $user_id the Users table foreign key corresponding to the unread message.
+     * @param integer $message_id the Message table foreign key corresponding to the unread message.
      */
     public function insert_unread($user_id, $message_id) {
         $this->_statement = $this->_dbh->prepare(
@@ -145,7 +145,7 @@ class DatabaseWrapper
      *
      * Adds a user to the Users table.
      *
-     * @param $username a string containing the username.
+     * @param string $username the username of the new row.
      */
     public function insert_user($username) {
         $this->_statement = $this->_dbh->prepare(
@@ -157,8 +157,11 @@ class DatabaseWrapper
     }
 
     /**
+     *
+     * Retrieves the corresponding row from the database.
+     *
      * @param $username
-     * @return mixed
+     * @return mixed an array with the username and database id of the user.
      */
     public function retrieve_user_by_name($username) {
         $this->_statement = $this->_dbh->prepare(
@@ -168,7 +171,14 @@ class DatabaseWrapper
         return $this->_statement->fetch();
     }
 
-    //FIXME Should only retrieve the unread messages!
+    /**
+     *
+     * Queries the database for the unread messages of a user.
+     *
+     * @param string $receiver_name the username of the receiving user.
+     * @return array of unread messages containing:
+     * message id, receiver id, message body, timestamp of the message and the username of the sender.
+     */
     public function retrieve_unread($receiver_name) {
         $this->_statement = $this->_dbh->prepare(
             "SELECT m.id, m.receiver, m.body, m.timestamp, u.username as sender_name 
@@ -186,7 +196,7 @@ class DatabaseWrapper
      *
      * Deletes a row from the Unread table.
      *
-     * @param $message_id the Messages foreign key of the row that has to be removed.
+     * @param integer $message_id the Messages foreign key of the row that has to be removed.
      */
     public function remove_from_unread($message_id){
         $this->_statement = $this->_dbh->prepare(
@@ -199,7 +209,7 @@ class DatabaseWrapper
      *
      * Deletes a row from the Users table.
      *
-     * @param $username the username of the row that has to be removed from the Users table.
+     * @param string $username the username of the row that has to be removed from the Users table.
      */
     public function delete_user($username) {
         $this->_statement = $this->_dbh->prepare(
