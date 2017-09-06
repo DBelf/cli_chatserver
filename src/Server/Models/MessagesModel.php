@@ -24,19 +24,19 @@ class MessagesModel implements Model
         $this->_db = $db;
     }
 
-    public function get($json = '[]') {
+    public function get($arguments = '[]') {
         // TODO: Implement get() method.
     }
 
-    public function post($json) {
+    public function post($arguments) {
         // TODO: Implement post() method.
     }
 
-    public function put($json) {
+    public function put($arguments) {
         // TODO: Implement put() method.
     }
 
-    public function delete($json) {
+    public function delete($arguments) {
         // TODO: Implement delete() method.
     }
 

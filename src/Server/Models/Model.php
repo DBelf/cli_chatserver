@@ -11,8 +11,8 @@ namespace ChatApplication\Server\Models;
 
 interface Model
 {
-    public function get($json = '[]');
-    public function post($json);
-    public function put($json);
-    public function delete($json);
+    public function get($arguments = []);
+    public function post($arguments);
+    public function put($arguments);
+    public function delete($arguments);
 }

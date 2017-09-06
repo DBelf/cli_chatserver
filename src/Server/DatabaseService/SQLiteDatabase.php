@@ -65,7 +65,7 @@ class SQLiteDatabase implements DatabaseService
         }
     }
 
-    public function query($statement, $arguments = []) {
+    public function query($statement, $arguments = array()) {
         $this->_statement = $this->_dbh->prepare($statement);
         $this->_statement->execute($arguments);
         return $this->_statement;

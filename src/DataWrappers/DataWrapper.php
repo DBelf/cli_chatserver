@@ -8,10 +8,11 @@
  * @author     Dimitri
  */
 
-namespace ChatApplication\Server\DatabaseService;
+namespace ChatApplication\DataWrappers;
 
 
-interface DatabaseService
+interface DataWrapper
 {
-    public function query($statement, $arguments);
+    public function display();
+    public function to_array();
 }

@@ -19,7 +19,7 @@ use function unlink;
 class SQLiteDatabaseTest extends TestCase
 {
     protected $_db;
-    protected $_database_name = 'src/tests/test.db';
+    protected $_database_name = 'src/tests/test_sql.db';
 
     /** @test */
     public function it_can_initialize_a_db_with_three_tables() {
@@ -97,7 +97,7 @@ class SQLiteDatabaseTest extends TestCase
 
     //Removes the database file to ensure predictable tests.
     public static function tearDownAfterClass() {
-        $file = __DIR__ . '\test.db';
+        $file = __DIR__ . '\test_sql.db';
         unlink($file);
     }
 }
