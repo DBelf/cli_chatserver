@@ -12,7 +12,7 @@ namespace ChatApplication\Server\Models;
 
 class UnreadModel implements Model
 {
-    protected $query_array = [
+    private $query_array = [
         'delete' => 'DELETE FROM Unread WHERE message_id = :message_id'
     ];
 

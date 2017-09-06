@@ -14,8 +14,8 @@ use function curl_close;
 
 class RemoteRequest
 {
-    private $_host_address;
-    private $_host_port;
+    private $host_address;
+    private $host_port;
 
     /**
      * RemoteRequest constructor.
@@ -23,8 +23,8 @@ class RemoteRequest
      * @param $host_port
      */
     public function __construct($host_address, $host_port) {
-        $this->_host_address = $host_address;
-        $this->_host_port = $host_port;
+        $this->host_address = $host_address;
+        $this->host_port = $host_port;
     }
 
     /**
@@ -39,7 +39,7 @@ class RemoteRequest
         $ch = curl_init();
         $json_url = urlencode($payload);
         curl_setopt($ch, CURLOPT_URL,
-            $this->_host_address . ':' . $this->_host_port . '/index.php' . $endpoint . '?json=' . $json_url);
+            $this->host_address . ':' . $this->host_port . '/index.php' . $endpoint . '?json=' . $json_url);
         curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
         curl_setopt($ch, CURLOPT_TIMEOUT, 3);
         $response = curl_exec($ch);
@@ -50,7 +50,7 @@ class RemoteRequest
     public function post_to_endpoint($endpoint, $payload = '[]') {
         $ch = curl_init();
         curl_setopt($ch, CURLOPT_URL,
-            $this->_host_address . ':' . $this->_host_port . '/index.php' . $endpoint);
+            $this->host_address . ':' . $this->host_port . '/index.php' . $endpoint);
         curl_setopt($ch, CURLOPT_HTTPHEADER, array('Content-Type: application/json'));
         curl_setopt($ch, CURLOPT_POST, 1);
         curl_setopt($ch, CURLOPT_POSTFIELDS, $payload);
@@ -63,7 +63,7 @@ class RemoteRequest
     public function put_on_endpoint($endpoint, $payload = '[]') {
         $ch = curl_init();
         curl_setopt($ch, CURLOPT_URL,
-            $this->_host_address . ':' . $this->_host_port . '/index.php' . $endpoint);
+            $this->host_address . ':' . $this->host_port . '/index.php' . $endpoint);
         curl_setopt($ch, CURLOPT_CUSTOMREQUEST, 'PUT');
         curl_setopt($ch, CURLOPT_POSTFIELDS, $payload);
         curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
@@ -75,7 +75,7 @@ class RemoteRequest
     public function delete_from_endpoint($endpoint, $payload = '[]') {
         $ch = curl_init();
         curl_setopt($ch, CURLOPT_URL,
-            $this->_host_address . ':' . $this->_host_port . '/index.php' . $endpoint);
+            $this->host_address . ':' . $this->host_port . '/index.php' . $endpoint);
         curl_setopt($ch, CURLOPT_CUSTOMREQUEST, 'DELETE');
         curl_setopt($ch, CURLOPT_POSTFIELDS, $payload);
         curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);

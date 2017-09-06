@@ -12,18 +12,29 @@ namespace ChatApplication\Server\DatabaseService;
 
 use \PDO;
 use PDOException;
-use function print_r;
 
 class SQLiteDatabase implements DatabaseService
 {
-    private $_dbh;
-    private $_statement;
+    private $dbh;
+    private $statement;
+
+    public function start_transaction() {
+        $this->dbh->beginTransaction();
+    }
+
+    public function commit() {
+        $this->dbh->commit();
+    }
+
+    public function roll_back() {
+        $this->dbh->rollBack();
+    }
 
     public function __construct($database_path) {
         try {
-            $this->_dbh = new PDO('sqlite:' . $database_path);
-            $this->_dbh->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
-            $this->_dbh->setAttribute(PDO::ATTR_EMULATE_PREPARES, false);
+            $this->dbh = new PDO('sqlite:' . $database_path);
+            $this->dbh->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
+            $this->dbh->setAttribute(PDO::ATTR_EMULATE_PREPARES, false);
         } catch (PDOException $e) {
             echo $e->getMessage();
         }
@@ -53,26 +64,26 @@ class SQLiteDatabase implements DatabaseService
               FOREIGN KEY(message_id) REFERENCES MessagesModel(id));"
         );
         try {
-            $this->_dbh->beginTransaction();
+            $this->dbh->beginTransaction();
 
             foreach ($tables as $table) {
-                $this->_statement = $this->_dbh->prepare($table);
-                $this->_statement->execute();
+                $this->statement = $this->dbh->prepare($table);
+                $this->statement->execute();
             }
-            $this->_dbh->commit();
+            $this->dbh->commit();
         } catch (PDOException $e) {
             echo $e->getMessage();
-            $this->_dbh->rollBack();
+            $this->dbh->rollBack();
         }
     }
 
     public function query($statement, $arguments = array()) {
-        $this->_statement = $this->_dbh->prepare($statement);
-        $this->_statement->execute($arguments);
-        return $this->_statement;
+        $this->statement = $this->dbh->prepare($statement);
+        $this->statement->execute($arguments);
+        return $this->statement;
     }
 
     public function get_last_insert_id() {
-        return $this->_dbh->lastInsertId();
+        return $this->dbh->lastInsertId();
     }
 }

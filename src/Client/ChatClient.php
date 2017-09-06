@@ -16,13 +16,13 @@ use ChatApplication\Messages;
 
 class ChatClient
 {
-    private $_username;
-    private $_input_stream;
-    private $_output_stream;
+    private $username;
+    private $input_stream;
+    private $output_stream;
 
     public function __construct($username, $input_stream, $output_stream) {
-        $this->_username = $username;
-        $this->_input_stream = $input_stream;
+        $this->username = $username;
+        $this->input_stream = $input_stream;
     }
 
 }

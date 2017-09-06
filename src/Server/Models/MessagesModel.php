@@ -13,12 +13,13 @@ namespace ChatApplication\Server\Models;
 require_once(__DIR__ . '/../../../vendor/autoload.php');
 
 use ChatApplication\Server\DatabaseService\DatabaseService;
+use PDOException;
 
 class MessagesModel implements Model
 {
-    private $_db;
-    private $_result_array = ['ok' => true];
-    protected $_query_array = [
+    private $db;
+    private $result_array = ['ok' => true];
+    private $query_array = [
         'get' => 'SELECT m.id, m.receiver, m.body, m.timestamp, u.username as sender_name 
                     FROM Messages m 
                     INNER JOIN Users u ON u.id = m.sender
@@ -35,7 +36,7 @@ class MessagesModel implements Model
      * @param DatabaseService $db
      */
     public function __construct(DatabaseService $db) {
-        $this->_db = $db;
+        $this->db = $db;
     }
 
     public function get($arguments = []) {
@@ -43,7 +44,24 @@ class MessagesModel implements Model
     }
 
     public function post($arguments) {
-        // TODO: Implement post() method.
+        try {
+            $this->db->start_transaction();
+            $this->db->query($this->query_array['post_message'], $arguments);
+            $message_id = $this->db->get_last_insert_id();
+            $unread_arguments = [
+                'user_id' => $arguments['receiver_id'],
+                'message_id' => $message_id
+            ];
+            $this->post_to_unread($unread_arguments);
+            $this->db->commit();
+        } catch (PDOException $e) {
+            echo $e->getMessage();
+            $this->db->roll_back();
+        }
+    }
+
+    private function post_to_unread($arguments) {
+        $this->db->query($this->query_array['post_unread'], $arguments);
     }
 
     public function put($arguments) {
@@ -58,7 +76,7 @@ class MessagesModel implements Model
      * @return mixed
      */
     public function get_result_array() {
-        // TODO: Implement get_result_array() method.
+        return $this->result_array;
     }
 
 }

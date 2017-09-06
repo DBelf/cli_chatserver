@@ -15,8 +15,8 @@ use function http_response_code;
 
 class Response
 {
-    protected $_response_code;
-    protected $_data = [];
+    protected $response_code;
+    protected $data = [];
 
     /**
      * Response constructor.
@@ -24,15 +24,13 @@ class Response
      * @param $data
      */
     public function __construct($response_code, $data) {
-        $this->_response_code = $response_code;
-        //Should skip the first element to include real errors
-        foreach($data as $element) {
-            $this->_data[] = $element->to_array();
-        }
+        $this->response_code = $response_code;
+        $this->data = $data;
+
     }
 
     public function send() {
-        http_response_code($this->_response_code);
-        echo _data;
+        http_response_code($this->response_code);
+        echo $this->data;
     }
 }

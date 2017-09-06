@@ -18,9 +18,9 @@ use PDOException;
 
 class UsersModel implements Model
 {
-    protected $_dbh;
-    protected $_result_array = ['ok' => true];
-    protected $query_array = [
+    private $dbh;
+    private $result_array = ['ok' => true];
+    private $query_array = [
         'get' => 'SELECT * FROM Users WHERE username = :username',
         'get_all' => 'SELECT * FROM Users',
         'post' => 'INSERT INTO Users (username) VALUES(:username)',
@@ -34,7 +34,7 @@ class UsersModel implements Model
      * @param DatabaseService $dbh
      */
     public function __construct(DatabaseService $dbh) {
-        $this->_dbh = $dbh;
+        $this->dbh = $dbh;
     }
 
     /**
@@ -42,10 +42,10 @@ class UsersModel implements Model
      */
     public function get($arguments = []) {
         if (count($arguments) < 1) {
-            $this->_result_array['users'] = $this->get_all();
+            $this->result_array['users'] = $this->get_all();
         }
         else {
-            $this->_result_array['users'] = $this->get_single($arguments);
+            $this->result_array['users'] = $this->get_single($arguments);
         }
     }
 
@@ -54,7 +54,7 @@ class UsersModel implements Model
      * @return array
      */
     private function get_single($arguments) {
-        $result = $this->_dbh->query($this->query_array['get'], $arguments)->fetchAll()[0];
+        $result = $this->dbh->query($this->query_array['get'], $arguments)->fetchAll()[0];
         $user = new User($result['id'], $result['username']);
         return $user->to_array();
     }
@@ -63,7 +63,7 @@ class UsersModel implements Model
      * @return array
      */
     private function get_all() {
-        $result = $this->_dbh->query($this->query_array['get_all'], array())->fetchAll();
+        $result = $this->dbh->query($this->query_array['get_all'], array())->fetchAll();
         $users = [];
         foreach($result as $row) {
             $user = new User($row['id'], $row['username']);
@@ -77,14 +77,14 @@ class UsersModel implements Model
      */
     public function post($arguments) {
         try {
-            $this->_dbh->query($this->query_array['post'], $arguments);
-            $last_id = $this->_dbh->get_last_insert_id();
-            $this->_result_array['user_id'] = $last_id;
+            $this->dbh->query($this->query_array['post'], $arguments);
+            $last_id = $this->dbh->get_last_insert_id();
+            $this->result_array['user_id'] = $last_id;
         } catch (PDOException $e) {
             //We've got a duplicate entry for the username.
             if ($e->errorInfo[1] == 19) {
-                $this->_result_array['ok'] = false;
-                $this->_result_array['error'] = 'Duplicate entry found';
+                $this->result_array['ok'] = false;
+                $this->result_array['error'] = 'Duplicate entry found';
             } else {
                 echo $e->getMessage();
             }
@@ -96,13 +96,13 @@ class UsersModel implements Model
      */
     public function put($arguments) {
         try {
-            $this->_dbh->query($this->query_array['put'], $arguments);
-            $this->_result_array['new_username'] = $arguments['new_username'];
+            $this->dbh->query($this->query_array['put'], $arguments);
+            $this->result_array['new_username'] = $arguments['new_username'];
         } catch(PDOException $e) {
             //We've got a duplicate entry for the username.
             if ($e->errorInfo[1] == 19) {
-                $this->_result_array['ok'] = false;
-                $this->_result_array['error'] = 'Duplicate entry found';
+                $this->result_array['ok'] = false;
+                $this->result_array['error'] = 'Duplicate entry found';
             } else {
                 echo $e->getMessage();
             }
@@ -113,13 +113,13 @@ class UsersModel implements Model
      * @param $arguments
      */
     public function delete($arguments) {
-        $this->_dbh->query($this->query_array['delete'], $arguments);
+        $this->dbh->query($this->query_array['delete'], $arguments);
     }
 
     /**
      * @return array
      */
     public function get_result_array() {
-        return $this->_result_array;
+        return $this->result_array;
     }
 }

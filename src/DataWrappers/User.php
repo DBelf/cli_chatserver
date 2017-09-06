@@ -14,8 +14,8 @@ use function sprintf;
 
 class User implements DataWrapper
 {
-    private $_id;
-    private $_username;
+    private $id;
+    private $username;
 
     /**
      * User constructor.
@@ -23,20 +23,20 @@ class User implements DataWrapper
      * @param $username
      */
     public function __construct($id, $username) {
-        $this->_id = $id;
-        $this->_username = $username;
+        $this->id = $id;
+        $this->username = $username;
     }
 
     public function to_array() {
         $array = [
-            'id' => $this->_id,
-             'username' => $this->_username
+            'id' => $this->id,
+             'username' => $this->username
         ];
         return $array;
     }
 
     public function display() {
-        sprintf('%s\n', $this->_username);
+        sprintf('%s\n', $this->username);
     }
 
 
