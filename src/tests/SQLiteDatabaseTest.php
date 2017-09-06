@@ -18,6 +18,9 @@ use function unlink;
 
 class SQLiteDatabaseTest extends TestCase
 {
+    /**
+     * @var SQLiteDatabase
+     */
     protected $_db;
     protected $_database_name = 'src/tests/test_sql.db';
 
@@ -31,7 +34,7 @@ class SQLiteDatabaseTest extends TestCase
 
     /** @test */
     public function it_can_initialize_a_db_with_three_tables() {
-        $base_statement = "SELECT Count(*) FROM sqlite_master WHERE type='table'";
+        $base_statement = 'SELECT Count(*) FROM sqlite_master WHERE type=\'table\'';
         $result = $this->_db->query($base_statement)->fetchColumn()[0];
         //Assert on 4 because sqlite_sequence is also returned.
         $this->assertEquals(4, $result);
@@ -44,8 +47,8 @@ class SQLiteDatabaseTest extends TestCase
 
     /** @test */
     public function it_can_execute_an_insert_query() {
-        $base_statement = "INSERT INTO Users (username) VALUES(:username)";
-        $count_statement = "SELECT Count(*) FROM Users";
+        $base_statement = 'INSERT INTO Users (username) VALUES(:username)';
+        $count_statement = 'SELECT Count(*) FROM Users';
         $argument = ['username' => 'Bob'];
         $prev_state = $this->_db->query($count_statement)->fetchColumn()[0];
         $this->_db->query($base_statement, $argument);
@@ -55,7 +58,7 @@ class SQLiteDatabaseTest extends TestCase
 
     /** @test */
     public function it_can_execute_a_select_query() {
-        $base_statement = "SELECT * FROM Users WHERE username = :username";
+        $base_statement = 'SELECT * FROM Users WHERE username = :username';
         $argument = ['username' => 'Bob'];
         $result = $this->_db->query($base_statement, $argument)->fetchAll();
         $this->assertEquals(1, $result[0]['id']);
@@ -64,27 +67,27 @@ class SQLiteDatabaseTest extends TestCase
 
     /** @test */
     public function it_can_execute_an_update_query() {
-        $base_statement = "UPDATE Users SET username = :new_username WHERE username = :username";
+        $base_statement = 'UPDATE Users SET username = :new_username WHERE username = :username';
         $arguments = [
             'new_username' => 'Robert',
             'username' => 'Bob'
         ];
         $this->_db->query($base_statement, $arguments);
 
-        $result = $this->_db->query("SELECT Count(*) FROM Users WHERE username = 'Robert'")->fetchColumn();
+        $result = $this->_db->query('SELECT Count(*) FROM Users WHERE username = \'Robert\'')->fetchColumn();
         $this->assertEquals(1, $result[0]);
 
-        $result = $this->_db->query("SELECT Count(*) FROM Users WHERE username = 'Bob'")->fetchColumn();
+        $result = $this->_db->query('SELECT Count(*) FROM Users WHERE username = \'Bob\'')->fetchColumn();
         $this->assertEquals(0, $result[0]);
     }
 
     /** @test */
     public function it_can_execute_a_delete_query() {
-        $base_statement = "DELETE FROM Users WHERE username = :username";
+        $base_statement = 'DELETE FROM Users WHERE username = :username';
         $argument = ['username' => 'Robert'];
 
         $this->_db->query($base_statement, $argument);
-        $result = $this->_db->query("SELECT Count(*) FROM Users")->fetchColumn();
+        $result = $this->_db->query('SELECT Count(*) FROM Users')->fetchColumn();
 
         $this->assertEquals(0, $result[0]);
     }

@@ -31,7 +31,7 @@ class RemoteRequest
      *
      * Creates a GET request and uses PHP's curl library to send the request to the given address and endpoint.
      *
-     * @param $endpoint the endpoint of the request that should be made.
+     * @param $endpoint string the endpoint of the request that should be made.
      * @param string $payload the string encoded json object which can be added to the request, optional.
      * @return string the result if the request was successful or a boolean false if the request was unsuccessful.
      */
@@ -76,7 +76,7 @@ class RemoteRequest
         $ch = curl_init();
         curl_setopt($ch, CURLOPT_URL,
             $this->_host_address . ':' . $this->_host_port . '/index.php' . $endpoint);
-        curl_setopt($ch, CURLOPT_CUSTOMREQUEST, "DELETE");
+        curl_setopt($ch, CURLOPT_CUSTOMREQUEST, 'DELETE');
         curl_setopt($ch, CURLOPT_POSTFIELDS, $payload);
         curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
         $response = curl_exec($ch);

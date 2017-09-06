@@ -49,6 +49,6 @@ class Message implements DataWrapper
 
     //TODO get time formatted.
     public function display() {
-        sprintf("%s[%d]: %s\n", $this->_sender_name, $this->_timestamp, $this->_body);
+        sprintf('%s[%d]: %s\n', $this->_sender_name, $this->_timestamp, $this->_body);
     }
 }

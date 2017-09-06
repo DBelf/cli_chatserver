@@ -36,7 +36,7 @@ class User implements DataWrapper
     }
 
     public function display() {
-        sprintf("%s\n", $this->_username);
+        sprintf('%s\n', $this->_username);
     }
 
 

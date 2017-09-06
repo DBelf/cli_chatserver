@@ -14,4 +14,5 @@ namespace ChatApplication\Server\DatabaseService;
 interface DatabaseService
 {
     public function query($statement, $arguments);
+    public function get_last_insert_id();
 }

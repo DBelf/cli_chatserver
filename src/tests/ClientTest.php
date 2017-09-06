@@ -28,7 +28,7 @@ class ClientTest extends TestCase
 
     protected function setUp() {
         $this->mock = new MockHandler([
-            new Response(200,[], json_encode("{'name':'test'}"))
+            new Response(200,[], json_encode('{\'name\':\'test\'}'))
         ]);
         $this->handler = HandlerStack::create($this->mock);
         $this->client = new Client(['handler' => $this->handler]);

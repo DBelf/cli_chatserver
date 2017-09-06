@@ -12,13 +12,22 @@ namespace ChatApplication\tests;
 
 require_once(__DIR__ . '/../../vendor/autoload.php');
 
+use ChatApplication\Server\DatabaseService\DatabaseService;
 use ChatApplication\Server\DatabaseService\SQLiteDatabase;
 use PHPUnit\Framework\TestCase;
 use ChatApplication\Server\Models;
 
 class UserModelTest extends TestCase
 {
+
+    /**
+     * @var DatabaseService
+     */
     protected $_db;
+
+    /**
+     * @var Models\UsersModel
+     */
     protected $_users_model;
 
     protected function setUp() {
@@ -35,7 +44,7 @@ class UserModelTest extends TestCase
     public function it_can_post_a_new_user_and_return_id() {
         $arguments = ['username' => 'Bob'];
         $this->_users_model->post($arguments);
-        $results = $this->_users_model->get_results();
+        $results = $this->_users_model->get_result_array();
         $id = $results['user_id'];
         $this->assertTrue($results['ok']);
         $this->assertEquals(1, $id);
@@ -45,7 +54,7 @@ class UserModelTest extends TestCase
     public function it_cant_add_same_username_twice() {
         $arguments = ['username' => 'Bob'];
         $this->_users_model->post($arguments);
-        $results = $this->_users_model->get_results();
+        $results = $this->_users_model->get_result_array();
         $error_message = $results['error'];
         $this->assertFalse($results['ok']);
         $this->assertEquals("Duplicate entry found" ,$error_message);
@@ -55,23 +64,23 @@ class UserModelTest extends TestCase
     public function it_can_retrieve_a_user_id_and_username() {
         $arguments = ['username' => 'Bob'];
         $this->_users_model->get($arguments);
-        $results = $this->_users_model->get_results();
+        $results = $this->_users_model->get_result_array();
         $user = $results['users'];
         $this->assertTrue($results['ok']);
-        $this->assertArrayHasKey('id' ,$user->to_array());
-        $this->assertArrayHasKey('username' ,$user->to_array());
-        $this->assertEquals('Bob' ,$user->to_array()['username']);
+        $this->assertArrayHasKey('id' ,$user);
+        $this->assertArrayHasKey('username' ,$user);
+        $this->assertEquals('Bob' ,$user['username']);
     }
 
     /** @test */
     public function it_can_retrieve_all_users() {
         $this->_users_model->get();
-        $results = $this->_users_model->get_results();
+        $results = $this->_users_model->get_result_array();
         $users = $results['users'];
         $this->assertTrue($results['ok']);
         $this->assertInternalType('array', $users);
         $first = $users[0];
-        $this->assertEquals('Bob', $first->to_array()['username']);
+        $this->assertEquals('Bob', $first['username']);
     }
     
     /** @test */
@@ -81,7 +90,7 @@ class UserModelTest extends TestCase
             'new_username' => 'Robert'
         ];
         $this->_users_model->put($arguments);
-        $results = $this->_users_model->get_results();
+        $results = $this->_users_model->get_result_array();
         $new_name = $results['new_username'];
         $this->assertTrue($results['ok']);
         $this->assertEquals('Robert', $new_name);
@@ -90,16 +99,16 @@ class UserModelTest extends TestCase
     /** @test */
     public function it_cant_change_to_an_existing_username() {
         $arguments = ['username' => 'Bob'];
-        $id = $this->_users_model->post($arguments);
+        $this->_users_model->post($arguments);
         $arguments = [
             'old_username' => 'Robert',
             'new_username' => 'Bob'
         ];
         $this->_users_model->put($arguments);
-        $results = $this->_users_model->get_results();
+        $results = $this->_users_model->get_result_array();
         $error_message = $results['error'];
         $this->assertFalse($results['ok']);
-        $this->assertEquals("Duplicate entry found" ,$error_message);
+        $this->assertEquals('Duplicate entry found' ,$error_message);
     }
 
     /** @test */
@@ -109,7 +118,7 @@ class UserModelTest extends TestCase
         ];
         $this->_users_model->delete($arguments);
         $this->_users_model->get();
-        $results = $this->_users_model->get_results();
+        $results = $this->_users_model->get_result_array();
         $users = $results['users'];
         $this->assertTrue(count($users) === 1);
     }

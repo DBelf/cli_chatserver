@@ -30,7 +30,7 @@
 
 namespace ChatApplication\Server;
 
-require_once(__DIR__ . '/../../vendor/autoload.php');
+require_once(__DIR__ . '/../../../vendor/autoload.php');
 
 use \PDO;
 use PDOException;
@@ -106,8 +106,8 @@ class DatabaseWrapper
         try {
             $this->_dbh->beginTransaction();
             $this->_statement = $this->_dbh->prepare(
-                "INSERT INTO Messages (sender, receiver, body, timestamp)
-                          VALUES(:sender_id, :receiver_id, :body, CURRENT_TIMESTAMP)"
+                'INSERT INTO Messages (sender, receiver, body, timestamp)
+                          VALUES(:sender_id, :receiver_id, :body, CURRENT_TIMESTAMP)'
             );
             $this->_statement->execute(array(
                'sender_id' => $sender_id,
@@ -133,7 +133,7 @@ class DatabaseWrapper
      */
     public function insert_unread($user_id, $message_id) {
         $this->_statement = $this->_dbh->prepare(
-            "INSERT INTO Unread (user_id, message_id) VALUES(:user_id, :message_id)"
+            'INSERT INTO Unread (user_id, message_id) VALUES(:user_id, :message_id)'
         );
         $this->_statement->execute(array(
             'user_id' => $user_id,
@@ -149,7 +149,7 @@ class DatabaseWrapper
      */
     public function insert_user($username) {
         $this->_statement = $this->_dbh->prepare(
-            "INSERT INTO Users (username) VALUES(:username)"
+            'INSERT INTO Users (username) VALUES(:username)'
         );
         $this->_statement->execute(array(
             'username' => $username
@@ -165,7 +165,7 @@ class DatabaseWrapper
      */
     public function retrieve_user_by_name($username) {
         $this->_statement = $this->_dbh->prepare(
-            "SELECT * FROM Users WHERE username = :username"
+            'SELECT * FROM Users WHERE username = :username'
         );
         $this->_statement->execute(array('username' => $username));
         return $this->_statement->fetch();
@@ -181,11 +181,11 @@ class DatabaseWrapper
      */
     public function retrieve_unread($receiver_name) {
         $this->_statement = $this->_dbh->prepare(
-            "SELECT m.id, m.receiver, m.body, m.timestamp, u.username as sender_name 
+            'SELECT m.id, m.receiver, m.body, m.timestamp, u.username as sender_name 
                     FROM Messages m 
                     INNER JOIN Users u ON u.id = m.sender
                     INNER JOIN Unread ur ON ur.message_id = m.id
-                    WHERE m.receiver IN (SELECT id FROM Users WHERE username = :receiver_name)"
+                    WHERE m.receiver IN (SELECT id FROM Users WHERE username = :receiver_name)'
         );
         $this->_statement->execute(array('receiver_name' => $receiver_name));
         $result = $this->_statement->fetchAll();
@@ -200,7 +200,7 @@ class DatabaseWrapper
      */
     public function remove_from_unread($message_id){
         $this->_statement = $this->_dbh->prepare(
-            "DELETE FROM Unread WHERE message_id = :message_id"
+            'DELETE FROM Unread WHERE message_id = :message_id'
         );
         $this->_statement->execute(array('message_id' => $message_id));
     }
@@ -213,7 +213,7 @@ class DatabaseWrapper
      */
     public function delete_user($username) {
         $this->_statement = $this->_dbh->prepare(
-            "DELETE FROM Users WHERE username = :username"
+            'DELETE FROM Users WHERE username = :username'
         );
         $this->_statement->execute(array('username' => $username));
     }
@@ -223,7 +223,7 @@ class DatabaseWrapper
      */
     public function total_users() {
         $this->_statement = $this->_dbh->prepare(
-            "SELECT Count(*) FROM Users"
+            'SELECT Count(*) FROM Users'
         );
         $this->_statement->execute();
         return $this->_statement->fetchColumn();
@@ -234,7 +234,7 @@ class DatabaseWrapper
      */
     public function total_messages() {
         $this->_statement = $this->_dbh->prepare(
-            "SELECT Count(*) FROM Messages"
+            'SELECT Count(*) FROM Messages'
         );
         $this->_statement->execute();
         return $this->_statement->fetchColumn();
@@ -245,7 +245,7 @@ class DatabaseWrapper
      */
     public function total_unread() {
         $this->_statement = $this->_dbh->prepare(
-            "SELECT Count(*) FROM Unread"
+            'SELECT Count(*) FROM Unread'
         );
         $this->_statement->execute();
         return $this->_statement->fetchColumn();
