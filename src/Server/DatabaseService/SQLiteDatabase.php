@@ -38,7 +38,8 @@ class SQLiteDatabase implements DatabaseService
         $tables = array(
             "CREATE TABLE IF NOT EXISTS Users (
               id INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL,
-              username VARCHAR);",
+              username VARCHAR,
+              UNIQUE (username));",
             "CREATE TABLE IF NOT EXISTS Messages (
               id INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL,
               sender INTEGER,

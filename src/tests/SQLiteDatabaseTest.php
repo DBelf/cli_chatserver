@@ -21,26 +21,29 @@ class SQLiteDatabaseTest extends TestCase
     protected $_db;
     protected $_database_name = 'src/tests/test_sql.db';
 
+    protected function setUp() {
+        $this->_db = new SQLiteDatabase($this->_database_name);
+    }
+
+    protected function tearDown() {
+        $this->_db = null;
+    }
+
     /** @test */
     public function it_can_initialize_a_db_with_three_tables() {
-        $this->_db = new SQLiteDatabase($this->_database_name);
         $base_statement = "SELECT Count(*) FROM sqlite_master WHERE type='table'";
         $result = $this->_db->query($base_statement)->fetchColumn()[0];
         //Assert on 4 because sqlite_sequence is also returned.
         $this->assertEquals(4, $result);
-        $this->_db = null;
     }
 
     /** @test */
     public function it_can_return_the_id_of_the_last_insert() {
-        $this->_db = new SQLiteDatabase($this->_database_name);
         $this->assertEquals(0, $this->_db->get_last_insert_id());
-        $this->_db = null;
     }
 
     /** @test */
     public function it_can_execute_an_insert_query() {
-        $this->_db = new SQLiteDatabase($this->_database_name);
         $base_statement = "INSERT INTO Users (username) VALUES(:username)";
         $count_statement = "SELECT Count(*) FROM Users";
         $argument = ['username' => 'Bob'];
@@ -48,23 +51,19 @@ class SQLiteDatabaseTest extends TestCase
         $this->_db->query($base_statement, $argument);
         $new_state = $this->_db->query($count_statement)->fetchColumn()[0];
         $this->assertEquals($prev_state + 1, $new_state);
-        $this->_db = null;
     }
 
     /** @test */
     public function it_can_execute_a_select_query() {
-        $this->_db = new SQLiteDatabase($this->_database_name);
         $base_statement = "SELECT * FROM Users WHERE username = :username";
         $argument = ['username' => 'Bob'];
         $result = $this->_db->query($base_statement, $argument)->fetchAll();
         $this->assertEquals(1, $result[0]['id']);
         $this->assertEquals('Bob', $result[0]['username']);
-        $this->_db = null;
     }
 
     /** @test */
     public function it_can_execute_an_update_query() {
-        $this->_db = new SQLiteDatabase($this->_database_name);
         $base_statement = "UPDATE Users SET username = :new_username WHERE username = :username";
         $arguments = [
             'new_username' => 'Robert',
@@ -77,13 +76,10 @@ class SQLiteDatabaseTest extends TestCase
 
         $result = $this->_db->query("SELECT Count(*) FROM Users WHERE username = 'Bob'")->fetchColumn();
         $this->assertEquals(0, $result[0]);
-
-        $this->_db = null;
     }
 
     /** @test */
     public function it_can_execute_a_delete_query() {
-        $this->_db = new SQLiteDatabase($this->_database_name);
         $base_statement = "DELETE FROM Users WHERE username = :username";
         $argument = ['username' => 'Robert'];
 
@@ -91,8 +87,6 @@ class SQLiteDatabaseTest extends TestCase
         $result = $this->_db->query("SELECT Count(*) FROM Users")->fetchColumn();
 
         $this->assertEquals(0, $result[0]);
-
-        $this->_db = null;
     }
 
     //Removes the database file to ensure predictable tests.

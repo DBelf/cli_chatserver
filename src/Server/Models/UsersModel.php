@@ -1,9 +1,11 @@
 <?php
 /**
- * Created by PhpStorm.
- * User: dimitri
- * Date: 05/09/2017
- * Time: 21:48
+ * Short description for file
+ *
+ * Long description for file (if any)...
+ *
+ * @package    bunq_assignment
+ * @author     Dimitri
  */
 
 namespace ChatApplication\Server\Models;
@@ -18,11 +20,12 @@ use function print_r;
 class UsersModel implements Model
 {
     protected $_dbh;
+    protected $_result_array = ["ok" => true];
     protected $query_array = [
         'get' => "SELECT * FROM Users WHERE username = :username",
         'get_all' => "SELECT * FROM Users",
         'post' => "INSERT INTO Users (username) VALUES(:username)",
-        'put' => "UPDATE Users SET username = :new_username WHERE username = :username",
+        'put' => "UPDATE Users SET username = :new_username WHERE username = :old_username",
         'delete' => "DELETE FROM Users WHERE username = :username"
     ];
 
@@ -31,23 +34,18 @@ class UsersModel implements Model
         $this->_dbh = $dbh;
     }
 
-    private function disconnect() {
-        $this->_dbh = null;
-    }
-
     public function get($arguments = []) {
         if (count($arguments) < 1) {
-            return $this->get_all();
+            $this->_result_array['users'] = $this->get_all();
         }
         else {
-            return $this->get_single($arguments);
+            $this->_result_array['users'] = $this->get_single($arguments);
         }
     }
 
     private function get_single($arguments) {
         $result = $this->_dbh->query($this->query_array['get'], $arguments)->fetchAll()[0];
         $user = new User($result['id'], $result['username']);
-        $this->disconnect();
         return $user;
     }
 
@@ -57,7 +55,6 @@ class UsersModel implements Model
         foreach($result as $row) {
             $users[] = new User($row['id'], $row['username']);
         }
-        $this->disconnect();
         return $users;
     }
 
@@ -65,14 +62,12 @@ class UsersModel implements Model
         try {
             $this->_dbh->query($this->query_array['post'], $arguments);
             $last_id = $this->_dbh->get_last_insert_id();
-            $this->disconnect();
-            return $last_id;
+            $this->_result_array['user_id'] = $last_id;
         } catch (PDOException $e) {
-            $this->disconnect();
-            //We've got a duplicate entry.
-            if ($e->errorInfo[1] == 1062) {
-                echo 'Duplicate username';
-                return false;
+            //We've got a duplicate entry for the username.
+            if ($e->errorInfo[1] == 19) {
+                $this->_result_array['ok'] = false;
+                $this->_result_array['error'] = "Duplicate entry found";
             } else {
                 echo $e->getMessage();
             }
@@ -80,13 +75,25 @@ class UsersModel implements Model
     }
 
     public function put($arguments) {
-        // TODO: Implement put() method.
-        $this->disconnect();
+        try {
+            $this->_dbh->query($this->query_array['put'], $arguments);
+            $this->_result_array['new_username'] = $arguments['new_username'];
+        } catch(PDOException $e) {
+            //We've got a duplicate entry for the username.
+            if ($e->errorInfo[1] == 19) {
+                $this->_result_array['ok'] = false;
+                $this->_result_array['error'] = "Duplicate entry found";
+            } else {
+                echo $e->getMessage();
+            }
+        }
     }
 
     public function delete($arguments) {
-        // TODO: Implement delete() method.
-        $this->disconnect();
+        $this->_dbh->query($this->query_array['delete'], $arguments);
     }
 
+    public function get_results_array() {
+        return $this->_result_array;
+    }
 }

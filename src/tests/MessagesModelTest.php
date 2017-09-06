@@ -10,7 +10,15 @@
 
 namespace ChatApplication\tests;
 
-class MessagesTest
-{
 
+use PHPUnit\Framework\TestCase;
+
+class MessagesModelTest extends TestCase
+{
+    protected $_db;
+    protected $_messages_model;
+
+    protected function setUp() {
+
+    }
 }
