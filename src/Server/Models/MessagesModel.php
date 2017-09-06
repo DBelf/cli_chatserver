@@ -8,9 +8,22 @@
 
 namespace ChatApplication\Server\Models;
 
+require_once(__DIR__ . '/../../../vendor/autoload.php');
+
+use ChatApplication\Server\DatabaseService\DatabaseService;
 
 class MessagesModel implements Model
 {
+    private $_db;
+
+    /**
+     * MessagesModel constructor.
+     * @param DatabaseService $db
+     */
+    public function __construct(DatabaseService $db) {
+        $this->_db = $db;
+    }
+
     public function get($json = '[]') {
         // TODO: Implement get() method.
     }

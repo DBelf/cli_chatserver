@@ -8,9 +8,10 @@
  * @author     Dimitri
  */
 
-namespace ChatApplication\Server;
+namespace ChatApplication\Server\DatabaseService;
 
-class ChatServer
+
+interface DatabaseService
 {
 
 }
