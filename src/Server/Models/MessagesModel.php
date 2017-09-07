@@ -13,13 +13,10 @@ namespace ChatApplication\Server\Models;
 require_once(__DIR__ . '/../../../vendor/autoload.php');
 
 use ChatApplication\DataWrappers\Message;
-use ChatApplication\Server\DatabaseService\DatabaseService;
 use PDOException;
 
-class MessagesModel implements Model
+class MessagesModel extends AbstractModel
 {
-    private $dbh;
-    private $result_array = ['ok' => true];
     private $query_array = [
         'get' => 'SELECT m.id, m.receiver, m.body, m.timestamp, u.username as sender_name 
                     FROM Messages m 
@@ -30,14 +27,6 @@ class MessagesModel implements Model
                           VALUES(:sender_id, :receiver_id, :body, CURRENT_TIMESTAMP)',
         'post_unread' => 'INSERT INTO Unread (user_id, message_id) VALUES(:user_id, :message_id)'
     ];
-
-    /**
-     * MessagesModel constructor.
-     * @param DatabaseService $db
-     */
-    public function __construct(DatabaseService $db) {
-        $this->dbh = $db;
-    }
 
     public function get($arguments = []) {
         if (count($arguments) < 1) {
@@ -52,7 +41,7 @@ class MessagesModel implements Model
         }
     }
 
-    public function post($arguments) {
+    public function post($arguments = []) {
         if (count($arguments) < 1) {
             $this->no_argument();
             return;
@@ -75,31 +64,6 @@ class MessagesModel implements Model
 
     private function post_to_unread($arguments) {
         $this->dbh->query($this->query_array['post_unread'], $arguments);
-    }
-
-    public function put($arguments = []) {
-        $this->not_implemented();
-    }
-
-    public function delete($arguments = []) {
-        $this->not_implemented();
-    }
-
-    private function not_implemented() {
-        $this->result_array['ok'] = false;
-        $this->result_array['error'] = 'Method not implemented!';
-    }
-
-    private function no_argument() {
-        $this->result_array['ok'] = false;
-        $this->result_array['error'] = 'No argument supplied!';
-    }
-
-    /**
-     * @return mixed
-     */
-    public function get_result_array() {
-        return $this->result_array;
     }
 
 }
