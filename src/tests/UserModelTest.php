@@ -51,7 +51,7 @@ class UserModelTest extends TestCase
     }
 
     /** @test */
-    public function it_cant_add_same_username_twice() {
+    public function it_fails_to_add_same_username_twice() {
         $arguments = ['username' => 'Bob'];
         $this->users_model->post($arguments);
         $results = $this->users_model->get_result_array();
@@ -65,7 +65,7 @@ class UserModelTest extends TestCase
         $arguments = ['username' => 'Bob'];
         $this->users_model->get($arguments);
         $results = $this->users_model->get_result_array();
-        $user = $results['users'];
+        $user = $results['users'][0];
         $this->assertTrue($results['ok']);
         $this->assertArrayHasKey('id' ,$user);
         $this->assertArrayHasKey('username' ,$user);
@@ -97,7 +97,7 @@ class UserModelTest extends TestCase
     }
 
     /** @test */
-    public function it_cant_change_to_an_existing_username() {
+    public function it_fails_to_change_to_an_existing_username() {
         $arguments = ['username' => 'Bob'];
         $this->users_model->post($arguments);
         $arguments = [
@@ -122,7 +122,7 @@ class UserModelTest extends TestCase
         $users = $results['users'];
         $this->assertTrue(count($users) === 1);
     }
-    
+
     //Removes the database file to ensure predictable tests.
     public static function tearDownAfterClass() {
         $file = __DIR__ . '\test_users_model.db';

@@ -6,7 +6,7 @@
   "autoload": {
       "psr-4": {
           "ChatApplication\\":"src/",
-          "ChatApplication\\DataWrappers\\":"src/DataWrwappers/",
+          "ChatApplication\\DataWrappers\\":"src/DataWrappers/",
           "ChatApplication\\Server\\":"src/Server/",
           "ChatApplication\\Server\\DatabaseService\\":"src/Server/DatabaseService/",
           "ChatApplication\\Server\\Models\\":"src/Server/Models/",

@@ -12,6 +12,7 @@ namespace ChatApplication\Server\Models;
 
 require_once(__DIR__ . '/../../../vendor/autoload.php');
 
+use ChatApplication\DataWrappers\Message;
 use ChatApplication\Server\DatabaseService\DatabaseService;
 use PDOException;
 
@@ -24,11 +25,10 @@ class MessagesModel implements Model
                     FROM Messages m 
                     INNER JOIN Users u ON u.id = m.sender
                     INNER JOIN Unread ur ON ur.message_id = m.id
-                    WHERE m.receiver IN (SELECT id FROM Users WHERE username = :receiver_name)',
+                    WHERE m.receiver = :receiver_id',
         'post_message' => 'INSERT INTO Messages (sender, receiver, body, timestamp)
                           VALUES(:sender_id, :receiver_id, :body, CURRENT_TIMESTAMP)',
-        'post_unread' => 'INSERT INTO Unread (user_id, message_id) VALUES(:user_id, :message_id)',
-        'delete' => 'DELETE FROM Unread WHERE message_id = :message_id'
+        'post_unread' => 'INSERT INTO Unread (user_id, message_id) VALUES(:user_id, :message_id)'
     ];
 
     /**
@@ -40,10 +40,23 @@ class MessagesModel implements Model
     }
 
     public function get($arguments = []) {
-
+        if (count($arguments) < 1) {
+            $this->no_argument();
+            return;
+        }
+        $result = $this->db->query($this->query_array['get'], $arguments)->fetchAll();
+        $this->result_array['messages'] = [];
+        foreach ($result as $row) {
+            $message = new Message($row['id'], $row['sender_name'], $row['timestamp'], $row['body']);
+            $this->result_array['messages'][] = $message->to_array();
+        }
     }
 
     public function post($arguments) {
+        if (count($arguments) < 1) {
+            $this->no_argument();
+            return;
+        }
         try {
             $this->db->start_transaction();
             $this->db->query($this->query_array['post_message'], $arguments);
@@ -64,12 +77,22 @@ class MessagesModel implements Model
         $this->db->query($this->query_array['post_unread'], $arguments);
     }
 
-    public function put($arguments) {
-        // TODO: Implement put() method.
+    public function put($arguments = []) {
+        $this->not_implemented();
     }
 
-    public function delete($arguments) {
-        // TODO: Implement delete() method.
+    public function delete($arguments = []) {
+        $this->not_implemented();
+    }
+
+    private function not_implemented() {
+        $this->result_array['ok'] = false;
+        $this->result_array['error'] = 'Method not implemented!';
+    }
+
+    private function no_argument() {
+        $this->result_array['ok'] = false;
+        $this->result_array['error'] = 'No argument supplied!';
     }
 
     /**

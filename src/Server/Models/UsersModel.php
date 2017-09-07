@@ -45,7 +45,7 @@ class UsersModel implements Model
             $this->result_array['users'] = $this->get_all();
         }
         else {
-            $this->result_array['users'] = $this->get_single($arguments);
+            $this->result_array['users'][] = $this->get_single($arguments);
         }
     }
 

@@ -12,6 +12,7 @@ namespace ChatApplication\Server\Models;
 
 class UnreadModel implements Model
 {
+    private $result_array = ['ok' => true];
     private $query_array = [
         'delete' => 'DELETE FROM Unread WHERE message_id = :message_id'
     ];
@@ -21,7 +22,7 @@ class UnreadModel implements Model
      * @return mixed
      */
     public function get($arguments = []) {
-        // TODO: Implement get() method.
+        $this->not_implemented();
     }
 
     /**
@@ -29,7 +30,7 @@ class UnreadModel implements Model
      * @return mixed
      */
     public function post($arguments) {
-        // TODO: Implement post() method.
+        $this->not_implemented();
     }
 
     /**
@@ -37,7 +38,7 @@ class UnreadModel implements Model
      * @return mixed
      */
     public function put($arguments) {
-        // TODO: Implement put() method.
+        $this->not_implemented();
     }
 
     /**
@@ -48,12 +49,16 @@ class UnreadModel implements Model
 
     }
 
+    private function not_implemented() {
+        $this->result_array['ok'] = false;
+        $this->result_array['error'] = 'Method not implemented!';
+    }
+
     /**
      * @return mixed
      */
     public function get_result_array() {
-        // TODO: Implement get_result_array() method.
+        return $this->result_array;
     }
-
 
 }

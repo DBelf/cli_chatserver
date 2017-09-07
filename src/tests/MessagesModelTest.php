@@ -58,6 +58,43 @@ class MessagesModelTest extends TestCase
         $this->assertEquals($message_count + 1, $new_message_count);
         $this->assertEquals($unread_count + 1, $new_unread_count);
     }
+    
+    /** @test */
+    public function it_can_retrieve_all_unread_messages_for_a_user() {
+        $arguments = [
+            'receiver_id' => 2 //Jill
+        ];
+        $this->messages_model->get($arguments);
+        $results = $this->messages_model->get_result_array();
+        $this->assertTrue($results['ok']);
+        $this->assertInternalType('array', $results['messages']);
+        $this->assertEquals(1, count($results['messages']));
+        $this->assertEquals('Hello!', $results['messages'][0]['body']);
+    }
+
+    /** @test */
+    public function it_fails_to_retrieve_messages_without_an_argument() {
+        $this->messages_model->get();
+        $results = $this->messages_model->get_result_array();
+        $this->assertFalse($results['ok']);
+        $this->assertEquals('No argument supplied!', $results['error']);
+    }
+    
+    /** @test */
+    public function it_fails_on_unimplemented_put_verb() {
+        $this->messages_model->put();
+        $results = $this->messages_model->get_result_array();
+        $this->assertFalse($results['ok']);
+        $this->assertEquals('Method not implemented!', $results['error']);
+    }
+
+    /** @test */
+    public function it_fails_on_unimplemented_delete_verb() {
+        $this->messages_model->delete();
+        $results = $this->messages_model->get_result_array();
+        $this->assertFalse($results['ok']);
+        $this->assertEquals('Method not implemented!', $results['error']);
+    }
 
     //Removes the database file to ensure predictable tests.
     public static function tearDownAfterClass() {
