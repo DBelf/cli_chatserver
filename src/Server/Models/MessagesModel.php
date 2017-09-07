@@ -18,7 +18,7 @@ use PDOException;
 
 class MessagesModel implements Model
 {
-    private $db;
+    private $dbh;
     private $result_array = ['ok' => true];
     private $query_array = [
         'get' => 'SELECT m.id, m.receiver, m.body, m.timestamp, u.username as sender_name 
@@ -36,7 +36,7 @@ class MessagesModel implements Model
      * @param DatabaseService $db
      */
     public function __construct(DatabaseService $db) {
-        $this->db = $db;
+        $this->dbh = $db;
     }
 
     public function get($arguments = []) {
@@ -44,7 +44,7 @@ class MessagesModel implements Model
             $this->no_argument();
             return;
         }
-        $result = $this->db->query($this->query_array['get'], $arguments)->fetchAll();
+        $result = $this->dbh->query($this->query_array['get'], $arguments)->fetchAll();
         $this->result_array['messages'] = [];
         foreach ($result as $row) {
             $message = new Message($row['id'], $row['sender_name'], $row['timestamp'], $row['body']);
@@ -58,23 +58,23 @@ class MessagesModel implements Model
             return;
         }
         try {
-            $this->db->start_transaction();
-            $this->db->query($this->query_array['post_message'], $arguments);
-            $message_id = $this->db->get_last_insert_id();
+            $this->dbh->start_transaction();
+            $this->dbh->query($this->query_array['post_message'], $arguments);
+            $message_id = $this->dbh->get_last_insert_id();
             $unread_arguments = [
                 'user_id' => $arguments['receiver_id'],
                 'message_id' => $message_id
             ];
             $this->post_to_unread($unread_arguments);
-            $this->db->commit();
+            $this->dbh->commit();
         } catch (PDOException $e) {
             echo $e->getMessage();
-            $this->db->roll_back();
+            $this->dbh->roll_back();
         }
     }
 
     private function post_to_unread($arguments) {
-        $this->db->query($this->query_array['post_unread'], $arguments);
+        $this->dbh->query($this->query_array['post_unread'], $arguments);
     }
 
     public function put($arguments = []) {

@@ -10,12 +10,24 @@
 
 namespace ChatApplication\Server\Models;
 
+use ChatApplication\Server\DatabaseService\DatabaseService;
+
 class UnreadModel implements Model
 {
+    private $dbh;
     private $result_array = ['ok' => true];
     private $query_array = [
         'delete' => 'DELETE FROM Unread WHERE message_id = :message_id'
     ];
+
+    /**
+     * UnreadModel constructor.
+     * @param $dbh
+     */
+    public function __construct(DatabaseService $dbh) {
+        $this->dbh = $dbh;
+    }
+
 
     /**
      * @param array $arguments
@@ -46,7 +58,7 @@ class UnreadModel implements Model
      * @return mixed
      */
     public function delete($arguments) {
-
+        $this->dbh->query($this->query_array['delete'], $arguments);
     }
 
     private function not_implemented() {
