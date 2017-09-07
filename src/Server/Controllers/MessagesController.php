@@ -8,14 +8,14 @@
  * @author     Dimitri
  */
 
-namespace ChatApplication\Server\Models;
+namespace ChatApplication\Server\Controllers;
 
 require_once(__DIR__ . '/../../../vendor/autoload.php');
 
-use ChatApplication\DataWrappers\Message;
+use ChatApplication\Models\Message;
 use PDOException;
 
-class MessagesModel extends AbstractModel
+class MessagesController extends AbstractController
 {
     private $query_array = [
         'get' => 'SELECT m.id, m.receiver, m.body, m.timestamp, u.username as sender_name 

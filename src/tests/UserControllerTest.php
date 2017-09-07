@@ -15,9 +15,9 @@ require_once(__DIR__ . '/../../vendor/autoload.php');
 use ChatApplication\Server\DatabaseService\DatabaseService;
 use ChatApplication\Server\DatabaseService\SQLiteDatabase;
 use PHPUnit\Framework\TestCase;
-use ChatApplication\Server\Models;
+use ChatApplication\Server\Controllers;
 
-class UserModelTest extends TestCase
+class UserControllerTest extends TestCase
 {
 
     /**
@@ -26,25 +26,25 @@ class UserModelTest extends TestCase
     protected $db;
 
     /**
-     * @var Models\UsersModel
+     * @var Controllers\UsersController
      */
-    protected $users_model;
+    protected $users_controller;
 
     protected function setUp() {
-        $this->db = new SQLiteDatabase(__DIR__ . '/test_users_model.db');
-        $this->users_model = new Models\UsersModel($this->db);
+        $this->db = new SQLiteDatabase(__DIR__ . '/test_users_controller.db');
+        $this->users_controller = new Controllers\UsersController($this->db);
     }
 
     protected function tearDown() {
         $this->db = null;
-        $this->users_model = null;
+        $this->users_controller = null;
     }
 
     /** @test */
     public function it_can_post_a_new_user_and_return_id() {
         $arguments = ['username' => 'Bob'];
-        $this->users_model->post($arguments);
-        $results = $this->users_model->get_result_array();
+        $this->users_controller->post($arguments);
+        $results = $this->users_controller->get_result_array();
         $id = $results['user_id'];
         $this->assertTrue($results['ok']);
         $this->assertEquals(1, $id);
@@ -53,8 +53,8 @@ class UserModelTest extends TestCase
     /** @test */
     public function it_fails_to_add_same_username_twice() {
         $arguments = ['username' => 'Bob'];
-        $this->users_model->post($arguments);
-        $results = $this->users_model->get_result_array();
+        $this->users_controller->post($arguments);
+        $results = $this->users_controller->get_result_array();
         $error_message = $results['error'];
         $this->assertFalse($results['ok']);
         $this->assertEquals("Duplicate entry found" ,$error_message);
@@ -63,8 +63,8 @@ class UserModelTest extends TestCase
     /** @test */
     public function it_can_retrieve_a_user_id_and_username() {
         $arguments = ['username' => 'Bob'];
-        $this->users_model->get($arguments);
-        $results = $this->users_model->get_result_array();
+        $this->users_controller->get($arguments);
+        $results = $this->users_controller->get_result_array();
         $user = $results['users'][0];
         $this->assertTrue($results['ok']);
         $this->assertArrayHasKey('id' ,$user);
@@ -74,8 +74,8 @@ class UserModelTest extends TestCase
 
     /** @test */
     public function it_can_retrieve_all_users() {
-        $this->users_model->get();
-        $results = $this->users_model->get_result_array();
+        $this->users_controller->get();
+        $results = $this->users_controller->get_result_array();
         $users = $results['users'];
         $this->assertTrue($results['ok']);
         $this->assertInternalType('array', $users);
@@ -89,8 +89,8 @@ class UserModelTest extends TestCase
             'old_username' => 'Bob',
             'new_username' => 'Robert'
         ];
-        $this->users_model->put($arguments);
-        $results = $this->users_model->get_result_array();
+        $this->users_controller->put($arguments);
+        $results = $this->users_controller->get_result_array();
         $new_name = $results['new_username'];
         $this->assertTrue($results['ok']);
         $this->assertEquals('Robert', $new_name);
@@ -99,13 +99,13 @@ class UserModelTest extends TestCase
     /** @test */
     public function it_fails_to_change_to_an_existing_username() {
         $arguments = ['username' => 'Bob'];
-        $this->users_model->post($arguments);
+        $this->users_controller->post($arguments);
         $arguments = [
             'old_username' => 'Robert',
             'new_username' => 'Bob'
         ];
-        $this->users_model->put($arguments);
-        $results = $this->users_model->get_result_array();
+        $this->users_controller->put($arguments);
+        $results = $this->users_controller->get_result_array();
         $error_message = $results['error'];
         $this->assertFalse($results['ok']);
         $this->assertEquals('Duplicate entry found' ,$error_message);
@@ -116,16 +116,16 @@ class UserModelTest extends TestCase
         $arguments = [
           'username' => 'Robert'
         ];
-        $this->users_model->delete($arguments);
-        $this->users_model->get();
-        $results = $this->users_model->get_result_array();
+        $this->users_controller->delete($arguments);
+        $this->users_controller->get();
+        $results = $this->users_controller->get_result_array();
         $users = $results['users'];
         $this->assertTrue(count($users) === 1);
     }
 
     //Removes the database file to ensure predictable tests.
     public static function tearDownAfterClass() {
-        $file = __DIR__ . '\test_users_model.db';
+        $file = __DIR__ . '\test_users_controller.db';
         unlink($file);
     }
 }

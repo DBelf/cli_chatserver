@@ -8,12 +8,11 @@
  * @author     Dimitri
  */
 
-namespace ChatApplication\Server\Models;
-
+namespace ChatApplication\Server\Controllers;
 
 use ChatApplication\Server\DatabaseService\DatabaseService;
 
-abstract class AbstractModel implements Model
+abstract class AbstractController implements Model
 {
     protected $dbh;
     protected $result_array = ['ok' => true];

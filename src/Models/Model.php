@@ -8,10 +8,10 @@
  * @author     Dimitri
  */
 
-namespace ChatApplication\DataWrappers;
+namespace ChatApplication\Models;
 
 
-interface DataWrapper
+interface Model
 {
     public function display();
     public function to_array();

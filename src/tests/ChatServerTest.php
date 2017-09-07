@@ -10,6 +10,7 @@
 
 namespace ChatApplication\tests;
 
+use ChatApplication\Server\ChatServer;
 use PHPUnit\Framework\TestCase;
 
 class ChatServerTest extends TestCase

@@ -8,9 +8,9 @@
  * @author     Dimitri
  */
 
-namespace ChatApplication\Server\Models;
+namespace ChatApplication\Server\Controllers;
 
-class UnreadModel extends AbstractModel
+class UnreadController extends AbstractController
 {
     private $query_array = [
         'delete' => 'DELETE FROM Unread WHERE message_id = :message_id'

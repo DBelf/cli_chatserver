@@ -8,7 +8,7 @@
  * @author     Dimitri
  */
 
-namespace ChatApplication\Server\Models;
+namespace ChatApplication\Server\Controllers;
 
 interface Model
 {

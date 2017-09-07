@@ -8,11 +8,11 @@
  * @author     Dimitri
  */
 
-namespace ChatApplication\DataWrappers;
+namespace ChatApplication\Models;
 
 use function sprintf;
 
-class Message implements DataWrapper
+class Message implements Model
 {
     private $message_id;
     private $sender_name;

@@ -8,14 +8,14 @@
  * @author     Dimitri
  */
 
-namespace ChatApplication\Server\Models;
+namespace ChatApplication\Server\Controllers;
 
 require_once(__DIR__ . '/../../../vendor/autoload.php');
 
-use ChatApplication\DataWrappers\User;
+use ChatApplication\Models\User;
 use PDOException;
 
-class UsersModel extends AbstractModel
+class UsersController extends AbstractController
 {
     private $query_array = [
         'get' => 'SELECT * FROM Users WHERE username = :username',
