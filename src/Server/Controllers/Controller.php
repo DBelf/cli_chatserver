@@ -10,7 +10,7 @@
 
 namespace ChatApplication\Server\Controllers;
 
-interface Model
+interface Controller
 {
     public function get($arguments = []);
     public function post($arguments);

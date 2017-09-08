@@ -12,9 +12,15 @@ namespace ChatApplication\Server\Controllers;
 
 use ChatApplication\Server\DatabaseService\DatabaseService;
 
-abstract class AbstractController implements Model
+abstract class AbstractController implements Controller
 {
+    /**
+     * @var DatabaseService
+     */
     protected $dbh;
+    /**
+     * @var array
+     */
     protected $result_array = ['ok' => true];
 
     public function __construct(DatabaseService $dbh) {
@@ -37,6 +43,7 @@ abstract class AbstractController implements Model
      */
     public function get($arguments = []) {
         $this->not_implemented();
+        return;
     }
 
     /**
@@ -45,6 +52,7 @@ abstract class AbstractController implements Model
      */
     public function post($arguments = []) {
         $this->not_implemented();
+        return;
     }
 
     /**
@@ -53,6 +61,7 @@ abstract class AbstractController implements Model
      */
     public function put($arguments = []) {
         $this->not_implemented();
+        return;
     }
 
     /**
@@ -61,6 +70,7 @@ abstract class AbstractController implements Model
      */
     public function delete($arguments = []) {
         $this->not_implemented();
+        return;
     }
 
     /**

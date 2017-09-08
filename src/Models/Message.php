@@ -14,9 +14,21 @@ use function sprintf;
 
 class Message implements Model
 {
+    /**
+     * @var integer
+     */
     private $message_id;
+    /**
+     * @var string
+     */
     private $sender_name;
+    /**
+     * @var integer
+     */
     private $timestamp;
+    /**
+     * @var string
+     */
     private $body;
 
     /**

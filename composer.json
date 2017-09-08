@@ -6,10 +6,10 @@
   "autoload": {
       "psr-4": {
           "ChatApplication\\":"src/",
-          "ChatApplication\\DataWrappers\\":"src/DataWrappers/",
+          "ChatApplication\\Models\\":"src/Models/",
           "ChatApplication\\Server\\":"src/Server/",
           "ChatApplication\\Server\\DatabaseService\\":"src/Server/DatabaseService/",
-          "ChatApplication\\Server\\Models\\":"src/Server/Models/",
+          "ChatApplication\\Server\\Controllers\\":"src/Server/Controllers/",
           "ChatApplication\\Client\\":"src/Client/"
       }
   }

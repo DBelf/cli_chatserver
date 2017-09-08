@@ -34,19 +34,12 @@ class UsersController extends AbstractController
         }
     }
 
-    /**
-     * @param $arguments
-     * @return array
-     */
     private function get_single($arguments = []) {
         $result = $this->dbh->query($this->query_array['get'], $arguments)->fetchAll()[0];
         $user = new User($result['id'], $result['username']);
         return $user->to_array();
     }
 
-    /**
-     * @return array
-     */
     private function get_all() {
         $result = $this->dbh->query($this->query_array['get_all'], array())->fetchAll();
         $users = [];
@@ -57,9 +50,6 @@ class UsersController extends AbstractController
         return $users;
     }
 
-    /**
-     * @param $arguments
-     */
     public function post($arguments = []) {
         try {
             $this->dbh->query($this->query_array['post'], $arguments);
@@ -76,9 +66,6 @@ class UsersController extends AbstractController
         }
     }
 
-    /**
-     * @param $arguments
-     */
     public function put($arguments = []) {
         try {
             $this->dbh->query($this->query_array['put'], $arguments);

@@ -18,7 +18,7 @@ use PHPUnit\Framework\TestCase;
 class MessagesControllerTest extends TestCase
 {
     /**
-     * @var DatabaseService
+     * @var SQLiteDatabase
      */
     protected $db;
     /**
@@ -42,7 +42,7 @@ class MessagesControllerTest extends TestCase
     }
 
     /** @test */
-    public function it_can_add_a_new_message_to_read_and_unread_databases() {
+    public function it_can_add_a_new_message_to_read_and_unread_tables() {
         $arguments = [
             'sender_id' => 1,
             'receiver_id' => 2,

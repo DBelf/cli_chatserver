@@ -14,7 +14,13 @@ use function sprintf;
 
 class User implements Model
 {
+    /**
+     * @var integer
+     */
     private $id;
+    /**
+     * @var string
+     */
     private $username;
 
     /**

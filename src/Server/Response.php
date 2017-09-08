@@ -12,25 +12,31 @@ namespace ChatApplication\Server;
 
 
 use function http_response_code;
+use function json_encode;
 
 class Response
 {
-    protected $response_code;
-    protected $data = [];
+    /**
+     * @var integer
+     */
+    private $status_code;
+    /**
+     * @var array
+     */
+    private $data;
 
     /**
      * Response constructor.
-     * @param $response_code
+     * @param $status_code
      * @param $data
      */
-    public function __construct($response_code, $data) {
-        $this->response_code = $response_code;
+    public function __construct($status_code, $data = []) {
+        $this->status_code = $status_code;
         $this->data = $data;
-
     }
 
     public function send() {
-        http_response_code($this->response_code);
-        echo $this->data;
+        http_response_code($this->status_code);
+        echo json_encode($this->data, true);
     }
 }

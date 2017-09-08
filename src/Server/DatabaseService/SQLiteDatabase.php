@@ -15,7 +15,13 @@ use PDOException;
 
 class SQLiteDatabase implements DatabaseService
 {
+    /**
+     * @var PDO
+     */
     private $dbh;
+    /**
+     * @var string
+     */
     private $statement;
 
     public function start_transaction() {
@@ -61,7 +67,7 @@ class SQLiteDatabase implements DatabaseService
               user_id INTEGER,
               message_id INTEGER,
               FOREIGN KEY(user_id) REFERENCES Users(id),
-              FOREIGN KEY(message_id) REFERENCES MessagesModel(id));"
+              FOREIGN KEY(message_id) REFERENCES Messages(id));"
         );
         try {
             $this->dbh->beginTransaction();
