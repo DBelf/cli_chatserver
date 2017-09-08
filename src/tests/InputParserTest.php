@@ -10,13 +10,10 @@
 
 namespace ChatApplication\tests;
 
-require(__DIR__ . '/../../vendor/autoload.php');
-
-use ChatApplication\Client\ChatClient;
-
+use ChatApplication\Client\InputParser;
 use PHPUnit\Framework\TestCase;
 
-class ClientTest extends TestCase
+class InputParserTest extends TestCase
 {
 
 }

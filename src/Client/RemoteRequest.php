@@ -28,7 +28,6 @@ class RemoteRequest
     }
 
     /**
-     *
      * Creates a GET request and uses PHP's curl library to send the request to the given address and endpoint.
      *
      * @param $endpoint string the endpoint of the request that should be made.

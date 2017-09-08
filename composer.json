@@ -10,7 +10,8 @@
           "ChatApplication\\Server\\":"src/Server/",
           "ChatApplication\\Server\\DatabaseService\\":"src/Server/DatabaseService/",
           "ChatApplication\\Server\\Controllers\\":"src/Server/Controllers/",
-          "ChatApplication\\Client\\":"src/Client/"
+          "ChatApplication\\Client\\":"src/Client/",
+          "ChatApplication\\Client\\ChatCommands\\":"src/Client/ChatCommands/"
       }
   }
 }

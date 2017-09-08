@@ -8,10 +8,9 @@
  * @author     Dimitri
  */
 
-namespace ChatApplication\Client;
+namespace ChatApplication\Client\ChatCommands;
 
-
-class RequestMessage
+interface ChatCommand
 {
-
+    public function execute();
 }
