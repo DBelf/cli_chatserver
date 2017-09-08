@@ -4,7 +4,7 @@
  *
  * This webserver is used to test cURL requests issued by the RemoteRequest.php class.
  *
- * Based off http://tech.vg.no/2013/07/19/using-phps-built-in-web-server-in-your-test-suites/
+ * Based off @link http://tech.vg.no/2013/07/19/using-phps-built-in-web-server-in-your-test-suites/
  *
  * @package    bunq_assignment
  * @author     Dimitri

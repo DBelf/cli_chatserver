@@ -1,8 +1,14 @@
 <?php
 /**
- * Short description for file
+ * Abstract class for the Controllers that are in charge of interacting with the database.
+ * This class implements the Controller interface @see Controller.
  *
- * Long description for file (if any)...
+ * Each controller should have at least one of the HTTP verbs implemented.
+ * Concrete Controllers construct a result array containing the data of their query, if any.
+ *
+ * If the query was successful, the ok value of the response array will be set to true.
+ * If the query was unsuccessful, the ok value of the response array will be set to false and
+ * an error element will be added with a message containing the error message.
  *
  * @package    bunq_assignment
  * @author     Dimitri

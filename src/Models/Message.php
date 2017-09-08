@@ -1,15 +1,16 @@
 <?php
 /**
- * Short description for file
+ * Message model.
  *
- * Long description for file (if any)...
+ * Message models are wrappers for the information of the communication between two users.
+ * Message objects are used by the MessageController to transform the data to arrays @see MessagesController.
+ * Messages objects used by the ChatClient to display the message @see ChatClient.
  *
  * @package    bunq_assignment
  * @author     Dimitri
  */
 
 namespace ChatApplication\Models;
-
 use function sprintf;
 
 class Message implements Model
@@ -45,7 +46,7 @@ class Message implements Model
         $this->body = $body;
     }
 
-    public function id() {
+    public function get_id() {
         return $this->message_id;
     }
 

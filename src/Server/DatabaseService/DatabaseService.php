@@ -1,8 +1,7 @@
 <?php
 /**
- * Short description for file
- *
- * Long description for file (if any)...
+ * Interface of the DatabaseServices.
+ * Concrete DatabaseServices are PDO wrappers with different database types.
  *
  * @package    bunq_assignment
  * @author     Dimitri

@@ -1,8 +1,7 @@
 <?php
 /**
- * Short description for file
- *
- * Long description for file (if any)...
+ * An SQLite PDO wrapper, used by Controllers to query the database.
+ * @see Controller and the implementations.
  *
  * @package    bunq_assignment
  * @author     Dimitri
@@ -12,6 +11,7 @@ namespace ChatApplication\Server\DatabaseService;
 
 use \PDO;
 use PDOException;
+use PDOStatement;
 
 class SQLiteDatabase implements DatabaseService
 {
@@ -24,18 +24,10 @@ class SQLiteDatabase implements DatabaseService
      */
     private $statement;
 
-    public function start_transaction() {
-        $this->dbh->beginTransaction();
-    }
-
-    public function commit() {
-        $this->dbh->commit();
-    }
-
-    public function roll_back() {
-        $this->dbh->rollBack();
-    }
-
+    /**
+     * SQLiteDatabase constructor.
+     * @param $database_path
+     */
     public function __construct($database_path) {
         try {
             $this->dbh = new PDO('sqlite:' . $database_path);
@@ -45,6 +37,30 @@ class SQLiteDatabase implements DatabaseService
             echo $e->getMessage();
         }
         $this->init_tables();
+    }
+
+    /**
+     * Wrapper for the PDO begin transaction method.
+     * @see PDO::beginTransaction()
+     */
+    public function start_transaction() {
+        $this->dbh->beginTransaction();
+    }
+
+    /**
+     * Wrapper for the PDO commit method.
+     * @see PDO::commit()
+     */
+    public function commit() {
+        $this->dbh->commit();
+    }
+
+    /**
+     * Wrapper for the PDO rollBack method.
+     * @see PDO::rollBack()
+     */
+    public function roll_back() {
+        $this->dbh->rollBack();
     }
 
     /**
@@ -71,24 +87,41 @@ class SQLiteDatabase implements DatabaseService
         );
         try {
             $this->dbh->beginTransaction();
-
+            //Loop over the tables and add them.
             foreach ($tables as $table) {
                 $this->statement = $this->dbh->prepare($table);
                 $this->statement->execute();
             }
             $this->dbh->commit();
         } catch (PDOException $e) {
+            //Roll back the database to a previous state if anything went wrong.
             echo $e->getMessage();
             $this->dbh->rollBack();
         }
     }
 
+    /**
+     * Wrapper for the PDO query and execute methods.
+     * @see PDO::query()
+     * @see PDO::execute()
+     *
+     * @param $statement
+     * @param array $arguments
+     * @return \PDOStatement
+     * @see PDOStatement
+     */
     public function query($statement, $arguments = array()) {
         $this->statement = $this->dbh->prepare($statement);
         $this->statement->execute($arguments);
         return $this->statement;
     }
 
+    /**
+     * Wrapper for the PDO lastInsertId method.
+     * @see PDO::lastInsertId()
+     *
+     * @return string
+     */
     public function get_last_insert_id() {
         return $this->dbh->lastInsertId();
     }

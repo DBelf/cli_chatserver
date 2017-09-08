@@ -1,8 +1,10 @@
 <?php
 /**
- * Short description for file
+ * User model.
  *
- * Long description for file (if any)...
+ * User models are wrappers for the information of one user.
+ * User objects are used by the MessageController to transform the data to arrays @see MessagesController.
+ * User objects are used by the ChatClient to display the message @see ChatClient.
  *
  * @package    bunq_assignment
  * @author     Dimitri
@@ -36,7 +38,7 @@ class User implements Model
     public function to_array() {
         $array = [
             'id' => $this->id,
-             'username' => $this->username
+            'username' => $this->username
         ];
         return $array;
     }

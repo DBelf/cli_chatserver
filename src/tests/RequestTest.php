@@ -13,7 +13,6 @@ namespace ChatApplication\tests;
 use ChatApplication\Server\Request;
 use PHPUnit\Framework\TestCase;
 use ReflectionClass;
-use function var_dump;
 
 class RequestTest extends TestCase
 {
@@ -29,7 +28,6 @@ class RequestTest extends TestCase
         $request = new Request('GET', '/index.php/unread?json=%7B%22key%22%3A%22value%22%7D');
         $request->parse_payload();
         $this->assertEquals('Unread', $request->get_endpoint());
-        var_dump($request->get_payload());
         $this->assertEquals('{"key":"value"}', $request->get_payload());
     }
 

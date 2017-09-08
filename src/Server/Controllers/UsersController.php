@@ -1,8 +1,15 @@
 <?php
 /**
- * Short description for file
+ * Implementation of the Abstract Controller in charge of querying the database for messages.
+ * @see AbstractController
  *
- * Long description for file (if any)...
+ * The UsersController supports get, post, put and delete HTTP verbs.
+ *
+ * The get verb will retrieve a list of all users in the Users table if no argument was provided.
+ * The get verb will retrieve a single user from the Users table if an argument was provided.
+ * The post verb will insert a new user into the Users table with the provided username.
+ * The put verb will update the row of the user with the corresponding username in the Users table..
+ * The delete verb will remove the row of the user with the corresponding username from the Users table.
  *
  * @package    bunq_assignment
  * @author     Dimitri
@@ -25,7 +32,20 @@ class UsersController extends AbstractController
         'delete' => 'DELETE FROM Users WHERE username = :username'
     ];
 
-     public function get($arguments = []) {
+    /**
+     * Queries the Users table for a list of the users and adds this to the
+     * result_array.
+     * Dispatches to the get_single function if an argument was provided.
+     * @see UsersController::get_single()
+     *
+     * Dispatches to the get_all function if no argument was provided.
+     * @see UsersController::get_all()
+     *
+     * @param array $arguments
+     * @return void
+     */
+    public function get($arguments = []) {
+        //If no argument was provided, all users will be retrieved.
         if (count($arguments) < 1) {
             $this->result_array['users'] = $this->get_all();
         }
@@ -34,12 +54,23 @@ class UsersController extends AbstractController
         }
     }
 
+    /**
+     * Queries the Users table for the row of a single user.
+     *
+     * @param array $arguments contains the usename of the user that should be retrieved.
+     * @return array containing the User object in key, value pairs.
+     */
     private function get_single($arguments = []) {
         $result = $this->dbh->query($this->query_array['get'], $arguments)->fetchAll()[0];
         $user = new User($result['id'], $result['username']);
         return $user->to_array();
     }
 
+    /**
+     * Queries the Users table for all the rows.
+     *
+     * @return array containing the User objects of all users in the Users table in key, value pairs.
+     */
     private function get_all() {
         $result = $this->dbh->query($this->query_array['get_all'], array())->fetchAll();
         $users = [];
@@ -50,37 +81,63 @@ class UsersController extends AbstractController
         return $users;
     }
 
+    /**
+     * Queries the Users table to add a user.
+     * Adds the id of the user to the results_array upon succes.
+     *
+     * Updates the results_array with the error message upon failure.
+     * @param array $arguments username of the user that should be added to the Users table.
+     * @return void
+     */
     public function post($arguments = []) {
         try {
+            //Attempt to inser the new user.
             $this->dbh->query($this->query_array['post'], $arguments);
             $last_id = $this->dbh->get_last_insert_id();
             $this->result_array['user_id'] = $last_id;
         } catch (PDOException $e) {
-            //We've got a duplicate entry for the username.
+            $this->result_array['ok'] = false;
             if ($e->errorInfo[1] == 19) {
-                $this->result_array['ok'] = false;
+                //We've got a duplicate entry for the username.
                 $this->result_array['error'] = 'Duplicate entry found';
             } else {
-                echo $e->getMessage();
+                //Other error.
+                $this->result_array['error'] = $e->getMessage();
             }
         }
     }
 
+    /**
+     * Queries the Users table to update the row of a user.
+     * Adds the new username of the user to the results_array upon succes.
+     *
+     * Updates the results_array with the error message upon failure.
+     * @param array $arguments new username and old username of the row that should be updated.
+     * @return void
+     */
     public function put($arguments = []) {
         try {
+            //Attempt to update the row.
             $this->dbh->query($this->query_array['put'], $arguments);
             $this->result_array['new_username'] = $arguments['new_username'];
         } catch(PDOException $e) {
-            //We've got a duplicate entry for the username.
+            $this->result_array['ok'] = false;
             if ($e->errorInfo[1] == 19) {
-                $this->result_array['ok'] = false;
+                //We've got a duplicate entry for the username.
                 $this->result_array['error'] = 'Duplicate entry found';
             } else {
-                echo $e->getMessage();
+                //Other error.
+                $this->result_array['error'] = $e->getMessage();
             }
         }
     }
 
+    /**
+     * Queries the database to remove a user from the Users table.
+     *
+     * @param array $arguments contains the username of the user which should be removed.
+     * @return void
+     */
     public function delete($arguments = []) {
         $this->dbh->query($this->query_array['delete'], $arguments);
     }
