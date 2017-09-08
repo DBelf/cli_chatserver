@@ -61,7 +61,7 @@ class Message implements Model
         return $array;
     }
 
-    //TODO get time formatted.
+    //TODO: get time formatted.
     public function display() {
         sprintf('%s[%d]: %s\n', $this->sender_name, $this->timestamp, $this->body);
     }
