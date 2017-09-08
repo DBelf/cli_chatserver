@@ -11,7 +11,6 @@
 
 namespace ChatApplication\Server;
 
-
 use function http_response_code;
 use function json_encode;
 

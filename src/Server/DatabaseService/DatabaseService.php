@@ -9,13 +9,14 @@
 
 namespace ChatApplication\Server\DatabaseService;
 
-
 use PDOStatement;
 
 interface DatabaseService
 {
     public function start_transaction();
+
     public function commit();
+
     public function roll_back();
 
     /**
@@ -24,5 +25,6 @@ interface DatabaseService
      * @return PDOStatement
      */
     public function query($statement, $arguments);
+
     public function get_last_insert_id();
 }

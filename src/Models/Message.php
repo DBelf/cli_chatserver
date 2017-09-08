@@ -11,6 +11,7 @@
  */
 
 namespace ChatApplication\Models;
+
 use function sprintf;
 
 class Message implements Model

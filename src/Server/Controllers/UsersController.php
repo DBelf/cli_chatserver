@@ -48,8 +48,7 @@ class UsersController extends AbstractController
         //If no argument was provided, all users will be retrieved.
         if (count($arguments) < 1) {
             $this->result_array['users'] = $this->get_all();
-        }
-        else {
+        } else {
             $this->result_array['users'][] = $this->get_single($arguments);
         }
     }
@@ -74,7 +73,7 @@ class UsersController extends AbstractController
     private function get_all() {
         $result = $this->dbh->query($this->query_array['get_all'], array())->fetchAll();
         $users = [];
-        foreach($result as $row) {
+        foreach ($result as $row) {
             $user = new User($row['id'], $row['username']);
             $users[] = $user->to_array();
         }
@@ -120,7 +119,7 @@ class UsersController extends AbstractController
             //Attempt to update the row.
             $this->dbh->query($this->query_array['put'], $arguments);
             $this->result_array['new_username'] = $arguments['new_username'];
-        } catch(PDOException $e) {
+        } catch (PDOException $e) {
             $this->result_array['ok'] = false;
             if ($e->errorInfo[1] == 19) {
                 //We've got a duplicate entry for the username.
