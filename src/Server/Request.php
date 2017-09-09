@@ -68,7 +68,7 @@ class Request
                 $data = explode('?json=', $this->uri)[1];
                 $this->payload = urldecode($data);
             } else {
-                $this->payload = array();
+                $this->payload = json_encode(array());
             }
         } else {
             //Payload of other verbs can be read from php://input
@@ -81,7 +81,7 @@ class Request
      * @return array
      */
     public function get_payload() {
-        return $this->payload;
+        return json_decode($this->payload, true);
     }
 
     /**

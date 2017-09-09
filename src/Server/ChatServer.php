@@ -73,6 +73,7 @@ class ChatServer
      */
     public function handle() {
         $this->request = new Request($_SERVER['REQUEST_METHOD'], $_SERVER['REQUEST_URI']);
+        $this->request->parse_payload();
         //short-circuits so method_exists won't be called if the controller isn't loaded,
         if ($this->load_controller() && method_exists($this->controller, $this->request->get_verb())) {
             $this->controller->{$this->request->get_verb()}($this->request->get_payload());

@@ -11,8 +11,8 @@
 namespace ChatApplication\tests;
 
 use GuzzleHttp;
-use function json_decode;
 use PHPUnit\Framework\TestCase;
+use function json_decode;
 
 class ChatServerTest extends TestCase
 {

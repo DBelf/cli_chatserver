@@ -25,7 +25,14 @@ class MessageSendCommandTest extends TestCase
 
     /** @test */
     public function it_can_send_messages() {
-        $arguments = ['Carl', 'Hey!'];
+        $arguments = ['Carl', 'Sup!'];
+        $message_send_command = new MessageSendCommand($this->remote_request, $arguments);
+        $this->assertTrue($message_send_command->execute('Jane'));
+    }
+
+    /** @test */
+    public function it_displays_an_error_if_sending_fails() {
+        $arguments = ['Unknown', 'Sup!'];
         $message_send_command = new MessageSendCommand($this->remote_request, $arguments);
         $message_send_command->execute('Jane');
     }

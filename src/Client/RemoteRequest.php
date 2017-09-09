@@ -34,9 +34,9 @@ class RemoteRequest
      * @param string $payload the string encoded json object which can be added to the request, optional.
      * @return string the result if the request was successful or a boolean false if the request was unsuccessful.
      */
-    public function get_from_endpoint($endpoint, $payload = '[]') {
+    public function get_from_endpoint($endpoint, $payload = []) {
         $ch = curl_init();
-        $json_url = urlencode($payload);
+        $json_url = urlencode(json_encode($payload));
         curl_setopt($ch, CURLOPT_URL,
             $this->host_address . ':' . $this->host_port . '/index.php' . $endpoint . '?json=' . $json_url);
         curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
@@ -46,37 +46,37 @@ class RemoteRequest
         return $response;
     }
 
-    public function post_to_endpoint($endpoint, $payload = '[]') {
+    public function post_to_endpoint($endpoint, $payload = []) {
         $ch = curl_init();
         curl_setopt($ch, CURLOPT_URL,
             $this->host_address . ':' . $this->host_port . '/index.php' . $endpoint);
         curl_setopt($ch, CURLOPT_HTTPHEADER, array('Content-Type: application/json'));
         curl_setopt($ch, CURLOPT_POST, 1);
-        curl_setopt($ch, CURLOPT_POSTFIELDS, $payload);
+        curl_setopt($ch, CURLOPT_POSTFIELDS, json_encode($payload));
         curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
         $response = curl_exec($ch);
         curl_close($ch);
         return $response;
     }
 
-    public function put_on_endpoint($endpoint, $payload = '[]') {
+    public function put_on_endpoint($endpoint, $payload = []) {
         $ch = curl_init();
         curl_setopt($ch, CURLOPT_URL,
             $this->host_address . ':' . $this->host_port . '/index.php' . $endpoint);
         curl_setopt($ch, CURLOPT_CUSTOMREQUEST, 'PUT');
-        curl_setopt($ch, CURLOPT_POSTFIELDS, $payload);
+        curl_setopt($ch, CURLOPT_POSTFIELDS, json_encode($payload));
         curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
         $response = curl_exec($ch);
         curl_close($ch);
         return $response;
     }
 
-    public function delete_from_endpoint($endpoint, $payload = '[]') {
+    public function delete_from_endpoint($endpoint, $payload = []) {
         $ch = curl_init();
         curl_setopt($ch, CURLOPT_URL,
             $this->host_address . ':' . $this->host_port . '/index.php' . $endpoint);
         curl_setopt($ch, CURLOPT_CUSTOMREQUEST, 'DELETE');
-        curl_setopt($ch, CURLOPT_POSTFIELDS, $payload);
+        curl_setopt($ch, CURLOPT_POSTFIELDS, json_encode($payload));
         curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
         $response = curl_exec($ch);
         curl_close($ch);

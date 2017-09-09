@@ -12,10 +12,10 @@ namespace ChatApplication\tests;
 
 require(__DIR__ . '/../../vendor/autoload.php');
 
+use ChatApplication\Client\RemoteRequest;
+use PHPUnit\Framework\TestCase;
 use function explode;
 use function json_encode;
-use PHPUnit\Framework\TestCase;
-use ChatApplication\Client\RemoteRequest;
 use function urldecode;
 
 class RemoteRequestTest extends TestCase
@@ -45,7 +45,7 @@ class RemoteRequestTest extends TestCase
         $data = explode('?json=', $response)[1];
         $this->assertRegExp('/GET/', $response);
         $this->assertRegExp($endpoint . '/', $response);
-        $this->assertEquals($payload, urldecode($data));
+        $this->assertEquals($payload, json_decode(urldecode($data), true));
     }
 
     /** @test */
@@ -56,7 +56,7 @@ class RemoteRequestTest extends TestCase
         $data = explode('/', $response)[3];
         $this->assertRegExp('/POST/', $response);
         $this->assertRegExp($endpoint . '/', $response);
-        $this->assertEquals($payload, $data);
+        $this->assertEquals($payload, json_decode($data, true));
     }
 
     /** @test */
@@ -67,7 +67,7 @@ class RemoteRequestTest extends TestCase
         $data = explode('/', $response)[3];
         $this->assertRegExp('/PUT/', $response);
         $this->assertRegExp($endpoint . '/', $response);
-        $this->assertEquals($payload, $data);
+        $this->assertEquals($payload, json_decode($data, true));
     }
 
     /** @test */
@@ -78,6 +78,6 @@ class RemoteRequestTest extends TestCase
         $data = explode('/', $response)[3];
         $this->assertRegExp('/DELETE/', $response);
         $this->assertRegExp($endpoint . '/', $response);
-        $this->assertEquals($payload, $data);
+        $this->assertEquals($payload, json_decode($data, true));
     }
 }
