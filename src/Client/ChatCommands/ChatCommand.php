@@ -12,5 +12,5 @@ namespace ChatApplication\Client\ChatCommands;
 
 interface ChatCommand
 {
-    public function execute();
+    public function execute($username);
 }

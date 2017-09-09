@@ -15,21 +15,22 @@ use function sprintf;
 
 class UnknownCommand implements ChatCommand
 {
-    private $command;
+    private $argument;
 
     /**
      * UnknownCommand constructor.
-     * @param string $command
+     * @param $argument
      */
-    public function __construct($command) {
-        $this->command = $command;
+    public function __construct($argument) {
+        $this->argument = $argument;
     }
 
     /**
+     * @param $username
      * @return mixed
      */
-    public function execute() {
-        echo sprintf("Command %s not supported!" . PHP_EOL, $this->command);
+    public function execute($username) {
+        echo sprintf("Command %s not supported!" . PHP_EOL, $this->argument);
     }
 
 }

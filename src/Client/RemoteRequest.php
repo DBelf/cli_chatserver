@@ -19,8 +19,8 @@ class RemoteRequest
 
     /**
      * RemoteRequest constructor.
-     * @param $host_address
-     * @param $host_port
+     * @param $host_address string
+     * @param $host_port string
      */
     public function __construct($host_address, $host_port) {
         $this->host_address = $host_address;

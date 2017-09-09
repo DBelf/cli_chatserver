@@ -8,10 +8,11 @@
  * @author     Dimitri
  */
 
-namespace ChatApplication\Client\ChatCommands;
+namespace ChatApplication\tests;
 
+use PHPUnit\Framework\TestCase;
 
-class GetUsersCommand
+class MessageSendCommandTest extends TestCase
 {
 
 }

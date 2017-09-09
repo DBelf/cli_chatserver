@@ -54,7 +54,7 @@ class Request
      * @return string
      */
     private function parse_endpoint_from_uri() {
-        preg_match("/\/\w*.php\/(\w*)[\/| \?]?.*/", $this->uri, $matches);
+        preg_match('/\/\w*.php\/(\w*)[\/| \?]?.*/', $this->uri, $matches);
         return ucwords(strtolower($matches[1]));
     }
 
