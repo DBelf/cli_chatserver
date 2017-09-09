@@ -15,7 +15,6 @@ use ChatApplication\Client\RemoteRequest;
 
 class UsersUpdateCommand implements ChatCommand
 {
-
     private $remote_request;
     private $arguments;
 

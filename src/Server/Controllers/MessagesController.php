@@ -24,6 +24,7 @@ require_once(__DIR__ . '/../../../vendor/autoload.php');
 
 use ChatApplication\Models\Message;
 use PDOException;
+use function print_r;
 
 class MessagesController extends AbstractController
 {
@@ -35,10 +36,14 @@ class MessagesController extends AbstractController
                     FROM Messages m 
                     INNER JOIN Users u ON u.id = m.sender
                     INNER JOIN Unread ur ON ur.message_id = m.id
-                    WHERE m.receiver = :receiver_id',
+                    WHERE m.receiver = (SELECT id FROM Users WHERE username = :receiver)',
         'post_message' => 'INSERT INTO Messages (sender, receiver, body, timestamp)
-                          VALUES(:sender_id, :receiver_id, :body, CURRENT_TIMESTAMP)',
-        'post_unread' => 'INSERT INTO Unread (user_id, message_id) VALUES(:user_id, :message_id)'
+                          VALUES((SELECT id FROM Users WHERE username = :sender_name),
+                           (SELECT id FROM Users WHERE username = :receiver_name), 
+                           :body, CURRENT_TIMESTAMP)',
+        'post_unread' => 'INSERT INTO Unread (user_id, message_id) 
+                          VALUES((SELECT id FROM Users WHERE username = :receiver_name), 
+                          :message_id)'
     ];
 
     /**
@@ -92,7 +97,7 @@ class MessagesController extends AbstractController
             $this->dbh->query($this->query_array['post_message'], $arguments);
             $message_id = $this->dbh->get_last_insert_id();
             $unread_arguments = [
-                'user_id' => $arguments['receiver_id'],
+                'receiver_name' => $arguments['receiver_name'],
                 'message_id' => $message_id
             ];
             //Queries the Unread table.
@@ -102,6 +107,7 @@ class MessagesController extends AbstractController
             //If the transaction failed, the results array is updated.
             $this->result_array['ok'] = false;
             $this->result_array['error'] = $e->getMessage();
+            print_r($e->getMessage());
             $this->dbh->roll_back();
         }
     }

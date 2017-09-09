@@ -10,9 +10,9 @@
 
 namespace ChatApplication\tests;
 
-use ChatApplication\Server\DatabaseService\SQLiteDatabase;
 use ChatApplication\Server\Controllers\MessagesController;
 use ChatApplication\Server\Controllers\UsersController;
+use ChatApplication\Server\DatabaseService\SQLiteDatabase;
 use PHPUnit\Framework\TestCase;
 
 class MessagesControllerTest extends TestCase
@@ -29,11 +29,11 @@ class MessagesControllerTest extends TestCase
     protected function setUp() {
         $this->db = new SQLiteDatabase(__DIR__ . '/test_messages_controller.db');
         $this->messages_controller = new MessagesController($this->db);
-        $users_model = new UsersController($this->db);
+        $users_controller = new UsersController($this->db);
         $arguments = ['username' => 'Bob']; //id = 1
-        $users_model->post($arguments);
+        $users_controller->post($arguments);
         $arguments = ['username' => 'Jill']; //id = 2
-        $users_model->post($arguments);
+        $users_controller->post($arguments);
     }
 
     protected function tearDown() {
@@ -44,8 +44,8 @@ class MessagesControllerTest extends TestCase
     /** @test */
     public function it_can_add_a_new_message_to_read_and_unread_tables() {
         $arguments = [
-            'sender_id' => 1,
-            'receiver_id' => 2,
+            'sender_name' => 'Bob',
+            'receiver_name' => 'Jill',
             'body' => 'Hello!'
         ];
         $message_count = $this->db->query("SELECT Count(*) FROM Messages")->fetchColumn()[0];
@@ -54,7 +54,7 @@ class MessagesControllerTest extends TestCase
         $this->messages_controller->post($arguments);
         $new_message_count = $this->db->query("SELECT Count(*) FROM Messages")->fetchColumn()[0];
         $new_unread_count = $this->db->query("SELECT Count(*) FROM Unread")->fetchColumn()[0];
-
+        $this->assertTrue($this->messages_controller->get_result_array()['ok']);
         $this->assertEquals($message_count + 1, $new_message_count);
         $this->assertEquals($unread_count + 1, $new_unread_count);
     }
@@ -62,7 +62,7 @@ class MessagesControllerTest extends TestCase
     /** @test */
     public function it_can_retrieve_all_unread_messages_for_a_user() {
         $arguments = [
-            'receiver_id' => 2 //Jill
+            'receiver' => 'Jill' //Jill
         ];
         $this->messages_controller->get($arguments);
         $results = $this->messages_controller->get_result_array();

@@ -10,10 +10,11 @@
 
 namespace ChatApplication\tests;
 
-use ChatApplication\Server\DatabaseService\SQLiteDatabase;
 use ChatApplication\Server\Controllers\MessagesController;
 use ChatApplication\Server\Controllers\UnreadController;
 use ChatApplication\Server\Controllers\UsersController;
+use ChatApplication\Server\DatabaseService\DatabaseService;
+use ChatApplication\Server\DatabaseService\SQLiteDatabase;
 use PHPUnit\Framework\TestCase;
 
 class UnreadControllerTest extends TestCase
@@ -30,19 +31,19 @@ class UnreadControllerTest extends TestCase
     protected function setUp() {
         $this->db = new SQLiteDatabase(__DIR__ . '/test_unread_controller.db');
         $this->unread_controller = new UnreadController($this->db);
-        $users_model = new UsersController($this->db);
-        $arguments = ['username' => 'Bob']; //id = 1
-        $users_model->post($arguments);
-        $arguments = ['username' => 'Jill']; //id = 2
-        $users_model->post($arguments);
+        $users_controller = new UsersController($this->db);
+        $arguments = ['username' => 'Bob'];
+        $users_controller->post($arguments);
+        $arguments = ['username' => 'Jill'];
+        $users_controller->post($arguments);
 
-        $message_model = new MessagesController($this->db);
+        $message_controller = new MessagesController($this->db);
         $arguments = [
-            'sender_id' => 1,
-            'receiver_id' => 2,
+            'sender_name' => 'Bob',
+            'receiver_name' => 'Jill',
             'body' => 'Hello!'
         ];
-        $message_model->post($arguments);
+        $message_controller->post($arguments);
     }
 
     /** @test */
@@ -53,7 +54,7 @@ class UnreadControllerTest extends TestCase
         $results = $this->unread_controller->get_result_array();
         $new_unread_count = $this->db->query("SELECT Count(*) FROM Unread")->fetchColumn()[0];
         $this->assertTrue($results['ok']);
-        $this->assertEquals(0, $new_unread_count);
+        $this->assertEquals($unread_count - 1, $new_unread_count);
     }
 
     /** @test */
