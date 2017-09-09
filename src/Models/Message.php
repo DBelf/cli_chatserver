@@ -64,6 +64,6 @@ class Message implements Model
 
     //TODO: get time formatted.
     public function display() {
-        sprintf('%s[%d]: %s' . PHP_EOL, $this->sender_name, $this->timestamp, $this->body);
+        echo sprintf('%s[%d]: %s' . PHP_EOL, $this->sender_name, $this->timestamp, $this->body);
     }
 }

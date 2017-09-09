@@ -1,6 +1,6 @@
 <?php
 /**
- * Used by a ChatClient to parse user input into commands and arguments for the commands.
+ * Used by a CLIChatClientApp to parse user input into commands and arguments for the commands.
  *
  * Long description for file (if any)...
  *

@@ -46,8 +46,10 @@ class UsersControllerTest extends TestCase
         $this->users_controller->post($arguments);
         $results = $this->users_controller->get_result_array();
         $id = $results['user_id'];
+        $username = $results['username'];
         $this->assertTrue($results['ok']);
         $this->assertEquals(1, $id);
+        $this->assertEquals('Bob', $username);
     }
 
     /** @test */

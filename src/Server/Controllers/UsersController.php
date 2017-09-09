@@ -93,6 +93,7 @@ class UsersController extends AbstractController
             //Attempt to inser the new user.
             $this->dbh->query($this->query_array['post'], $arguments);
             $last_id = $this->dbh->get_last_insert_id();
+            $this->result_array['username'] = $arguments['username'];
             $this->result_array['user_id'] = $last_id;
         } catch (PDOException $e) {
             $this->result_array['ok'] = false;

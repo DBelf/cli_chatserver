@@ -38,7 +38,7 @@ class RequestTest extends TestCase
         $reflection = new ReflectionClass($request);
         $file_in = $reflection->getProperty('file_in');
         $file_in->setAccessible(true);
-        $file_in->setValue($request, __DIR__ . '/test.json');
+        $file_in->setValue($request, __DIR__ . '/resources/test.json');
         $request->parse_payload();
         $this->assertEquals('Unread', $request->get_endpoint());
         $this->assertEquals(json_decode('{"key":"value"}', true), $request->get_payload());

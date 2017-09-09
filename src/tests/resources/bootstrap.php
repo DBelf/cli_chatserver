@@ -21,7 +21,7 @@ $command = sprintf(
     'START /MIN php -S %s:%d -t %s > null 2>&1 ',
     WEB_SERVER_HOST,
     WEB_SERVER_PORT,
-    realpath(__DIR__ . '/../tests/')
+    realpath(__DIR__ . '/../resources/')
 );
 
 // Execute the command and store the process ID
