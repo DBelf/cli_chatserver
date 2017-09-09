@@ -49,10 +49,10 @@ class UnreadControllerTest extends TestCase
     /** @test */
     public function it_can_delete_a_row_from_the_unread_table() {
         $arguments = ['message_id' => 1];
-        $unread_count = $this->db->query("SELECT Count(*) FROM Unread")->fetchColumn()[0];
+        $unread_count = $this->db->query("SELECT Count(*) FROM Unread", [])->fetchColumn()[0];
         $this->unread_controller->delete($arguments);
         $results = $this->unread_controller->get_result_array();
-        $new_unread_count = $this->db->query("SELECT Count(*) FROM Unread")->fetchColumn()[0];
+        $new_unread_count = $this->db->query("SELECT Count(*) FROM Unread", [])->fetchColumn()[0];
         $this->assertTrue($results['ok']);
         $this->assertEquals($unread_count - 1, $new_unread_count);
     }
