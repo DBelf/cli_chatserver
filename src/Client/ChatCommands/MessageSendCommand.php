@@ -34,10 +34,10 @@ class MessageSendCommand implements ChatCommand
      * @return mixed
      */
     public function execute($username) {
-        if (!count($this->arguments) === 2) {
-            echo 'Need a username and a body to send a message' . PHP_EOL;
+        if (count($this->arguments) !== 2) {
+            echo 'Need a username and a body to send a message!' . PHP_EOL;
+            return false;
         }
-
         $payload = [
             'sender_name' => $username,
             'receiver_name' => $this->arguments[0],

@@ -11,6 +11,7 @@
 namespace ChatApplication\Client\ChatCommands;
 
 use ChatApplication\Client\RemoteRequest;
+use ChatApplication\Models\User;
 
 class UsersGetCommand implements ChatCommand
 {
@@ -32,7 +33,29 @@ class UsersGetCommand implements ChatCommand
      * @return mixed
      */
     public function execute($username) {
-        // TODO: Implement execute() method.
+        $payload = [];
+        if (count($this->arguments) > 0) {
+            $payload = [
+                'username' => $this->arguments[0],
+            ];
+        }
+        $result = json_decode($this->remote_request->get_from_endpoint('/users', $payload), true);
+        if (!$result['ok']) {
+            echo 'Username doesn\'t exist!' . PHP_EOL;
+            return false;
+        }
+        $users = $this->construct_user_list($result['users']);
+        foreach ($users as $user) {
+            $user->display();
+        }
+        return true;
     }
 
+    private function construct_user_list($result) {
+        $users = [];
+        foreach ($result as $user) {
+            $users[] = new User($user['id'], $user['username']);
+        }
+        return $users;
+    }
 }

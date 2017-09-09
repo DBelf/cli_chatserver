@@ -12,6 +12,8 @@ namespace ChatApplication\Client\ChatCommands;
 
 
 use ChatApplication\Client\RemoteRequest;
+use const PHP_EOL;
+use function sprintf;
 
 class UsersUpdateCommand implements ChatCommand
 {
@@ -33,7 +35,21 @@ class UsersUpdateCommand implements ChatCommand
      * @return mixed
      */
     public function execute($username) {
-        // TODO: Implement execute() method.
+        if (count($this->arguments) !== 1) {
+            echo 'Need a username to update!' . PHP_EOL;
+            return false;
+        }
+        $payload = [
+            'old_username' => $username,
+            'new_username' => $this->arguments[0],
+        ];
+        $result = json_decode($this->remote_request->put_on_endpoint('/users', $payload), true);
+        if (!$result['ok']) {
+            echo $result['error'] . PHP_EOL;
+            return false;
+        }
+        echo sprintf('Username successfully updated to %s!', $this->arguments[0]) . PHP_EOL;
+        return true;
     }
 
 }

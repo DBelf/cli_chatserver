@@ -24,7 +24,6 @@ require_once(__DIR__ . '/../../../vendor/autoload.php');
 
 use ChatApplication\Models\Message;
 use PDOException;
-use function print_r;
 
 class MessagesController extends AbstractController
 {
@@ -106,9 +105,14 @@ class MessagesController extends AbstractController
         } catch (PDOException $e) {
             //If the transaction failed, the results array is updated.
             $this->result_array['ok'] = false;
-            $this->result_array['error'] = $e->getMessage();
-            print_r($e->getMessage());
             $this->dbh->roll_back();
+            if ($e->errorInfo[1] == 19) {
+                //Recipient not found in database.
+                $this->result_array['error'] = 'No such user!';
+            } else {
+                //Other error.
+                $this->result_array['error'] = $e->getMessage();
+            }
         }
     }
 

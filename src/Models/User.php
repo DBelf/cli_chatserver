@@ -12,6 +12,7 @@
 
 namespace ChatApplication\Models;
 
+use const PHP_EOL;
 use function sprintf;
 
 class User implements Model
@@ -44,8 +45,6 @@ class User implements Model
     }
 
     public function display() {
-        sprintf('%s\n', $this->username);
+        echo sprintf('%s: %d' . PHP_EOL, $this->username, $this->id);
     }
-
-
 }

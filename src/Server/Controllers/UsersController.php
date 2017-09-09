@@ -98,7 +98,7 @@ class UsersController extends AbstractController
             $this->result_array['ok'] = false;
             if ($e->errorInfo[1] == 19) {
                 //We've got a duplicate entry for the username.
-                $this->result_array['error'] = 'Duplicate entry found';
+                $this->result_array['error'] = 'Username already exists!';
             } else {
                 //Other error.
                 $this->result_array['error'] = $e->getMessage();
@@ -123,7 +123,7 @@ class UsersController extends AbstractController
             $this->result_array['ok'] = false;
             if ($e->errorInfo[1] == 19) {
                 //We've got a duplicate entry for the username.
-                $this->result_array['error'] = 'Duplicate entry found';
+                $this->result_array['error'] = 'Username already exists!';
             } else {
                 //Other error.
                 $this->result_array['error'] = $e->getMessage();

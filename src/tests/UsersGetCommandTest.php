@@ -2,7 +2,7 @@
 /**
  * Short description for file
  *
- * Proper functionality has to be tested by using the dsn and port of the server api.
+ * Long description for file (if any)...
  *
  * @package    bunq_assignment
  * @author     Dimitri
@@ -10,13 +10,12 @@
 
 namespace ChatApplication\tests;
 
-use ChatApplication\Client\ChatCommands\MessageSendCommand;
+use ChatApplication\Client\ChatCommands\UsersGetCommand;
 use ChatApplication\Client\RemoteRequest;
 use ChatApplication\Server\DatabaseService\SQLiteDatabase;
 use PHPUnit\Framework\TestCase;
-use const WEB_SERVER_HOST;
 
-class MessageSendCommandTest extends TestCase
+class UsersGetCommandTest extends TestCase
 {
     protected $remote_request;
 
@@ -24,6 +23,7 @@ class MessageSendCommandTest extends TestCase
         $dbh = new SQLiteDatabase(__DIR__ . '/../../database/chat_server.db');
         $dbh->query('INSERT INTO Users (username) VALUES(:username)', ['username' => 'Bob']);
         $dbh->query('INSERT INTO Users (username) VALUES(:username)', ['username' => 'Jill']);
+        $dbh->query('INSERT INTO Users (username) VALUES(:username)', ['username' => 'Carl']);
         $dbh = null;
     }
 
@@ -32,26 +32,28 @@ class MessageSendCommandTest extends TestCase
     }
 
     /** @test */
-    public function it_can_send_messages() {
-        $arguments = ['Bob', 'Sup!'];
-        $message_send_command = new MessageSendCommand($this->remote_request, $arguments);
-        $this->assertTrue($message_send_command->execute('Jill'));
-    }
-
-    /** @test */
-    public function it_displays_a_message_if_incorrect_number_of_arguments_provided() {
+    public function it_displays_the_information_of_a_single_user() {
         $arguments = ['Bob'];
-        $message_send_command = new MessageSendCommand($this->remote_request, $arguments);
-        $this->assertFalse($message_send_command->execute('Jill'));
-        $this->expectOutputRegex('/Need a username and a body to send a message!/');
+        $message_send_command = new UsersGetCommand($this->remote_request, $arguments);
+        $this->assertTrue($message_send_command->execute('Jill'));
+        $this->expectOutputRegex('/Bob: 1/');
+    }
+
+
+    /** @test */
+    public function it_displays_the_information_of_all_users() {
+        $arguments = [];
+        $message_send_command = new UsersGetCommand($this->remote_request, $arguments);
+        $this->assertTrue($message_send_command->execute('Jill'));
+        $this->expectOutputRegex('/Bob: 1[\r\n|\n]+Jill: 2[\r\n|\n]+Carl: 3/');
     }
 
     /** @test */
-    public function it_displays_an_error_if_sending_fails() {
-        $arguments = ['Unknown', 'Sup!'];
-        $message_send_command = new MessageSendCommand($this->remote_request, $arguments);
+    public function it_displays_a_message_if_username_doesnt_exist_in_database() {
+        $arguments = ['Robert'];
+        $message_send_command = new UsersGetCommand($this->remote_request, $arguments);
         $this->assertFalse($message_send_command->execute('Jill'));
-        $this->expectOutputRegex('/No such user!/');
+        $this->expectOutputRegex('/Username doesn\'t exist!/');
     }
 
     public static function tearDownAfterClass() {
@@ -61,5 +63,4 @@ class MessageSendCommandTest extends TestCase
         $dbh->query('DROP TABLE Unread', []);
         $dbh = null;
     }
-
 }

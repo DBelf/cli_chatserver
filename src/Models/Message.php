@@ -12,6 +12,7 @@
 
 namespace ChatApplication\Models;
 
+use const PHP_EOL;
 use function sprintf;
 
 class Message implements Model
@@ -63,6 +64,6 @@ class Message implements Model
 
     //TODO: get time formatted.
     public function display() {
-        sprintf('%s[%d]: %s\n', $this->sender_name, $this->timestamp, $this->body);
+        sprintf('%s[%d]: %s' . PHP_EOL, $this->sender_name, $this->timestamp, $this->body);
     }
 }

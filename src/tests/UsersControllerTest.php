@@ -12,12 +12,12 @@ namespace ChatApplication\tests;
 
 require_once(__DIR__ . '/../../vendor/autoload.php');
 
+use ChatApplication\Server\Controllers;
 use ChatApplication\Server\DatabaseService\DatabaseService;
 use ChatApplication\Server\DatabaseService\SQLiteDatabase;
 use PHPUnit\Framework\TestCase;
-use ChatApplication\Server\Controllers;
 
-class UserControllerTest extends TestCase
+class UsersControllerTest extends TestCase
 {
 
     /**
@@ -57,7 +57,7 @@ class UserControllerTest extends TestCase
         $results = $this->users_controller->get_result_array();
         $error_message = $results['error'];
         $this->assertFalse($results['ok']);
-        $this->assertEquals("Duplicate entry found" ,$error_message);
+        $this->assertEquals('Username already exists!', $error_message);
     }
 
     /** @test */
@@ -108,7 +108,7 @@ class UserControllerTest extends TestCase
         $results = $this->users_controller->get_result_array();
         $error_message = $results['error'];
         $this->assertFalse($results['ok']);
-        $this->assertEquals('Duplicate entry found' ,$error_message);
+        $this->assertEquals('Username already exists!', $error_message);
     }
 
     /** @test */

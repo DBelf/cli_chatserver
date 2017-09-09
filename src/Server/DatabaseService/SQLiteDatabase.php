@@ -9,7 +9,7 @@
 
 namespace ChatApplication\Server\DatabaseService;
 
-use \PDO;
+use PDO;
 use PDOException;
 use PDOStatement;
 
@@ -75,13 +75,13 @@ class SQLiteDatabase implements DatabaseService
               UNIQUE (username));",
             "CREATE TABLE IF NOT EXISTS Messages (
               id INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL,
-              sender INTEGER,
-              receiver INTEGER,
+              sender INTEGER NOT NULL,
+              receiver INTEGER NOT NULL,
               body VARCHAR,
               timestamp INTEGER);",
             "CREATE TABLE IF NOT EXISTS Unread (
-              user_id INTEGER,
-              message_id INTEGER,
+              user_id INTEGER NOT NULL,
+              message_id INTEGER NOT NULL,
               FOREIGN KEY(user_id) REFERENCES Users(id),
               FOREIGN KEY(message_id) REFERENCES Messages(id));"
         );
