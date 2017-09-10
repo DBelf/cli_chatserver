@@ -19,7 +19,7 @@ use function class_exists;
 class InputParser
 {
     private $remote_request;
-    private $pattern = '/(?P<class>\w*) (?P<action>\w*) ?(\w*[-|_]?\w*)? ?(.*)?/';
+    private $pattern = '/(?P<class>\w*) ?(?P<action>\w*)? ?(?P<argument1>\w*[-|_]?\w*)? ?(?P<rest>.*)?/';
     private $command_namespace = '\\ChatApplication\\Client\\ChatCommands\\';
 
     /**
@@ -37,7 +37,7 @@ class InputParser
     public function parse($input) {
         preg_match($this->pattern, $input, $matches);
         $command = ucfirst(strtolower($matches['class'])) . ucfirst(strtolower($matches['action']));
-        $arguments = array_slice($matches, 2);
+        $arguments = [$matches['argument1'], $matches['rest']];
         $command_class = $this->command_namespace . $command . 'Command';
         if (class_exists($command_class)) {
             return new $command_class($this->remote_request, $arguments);

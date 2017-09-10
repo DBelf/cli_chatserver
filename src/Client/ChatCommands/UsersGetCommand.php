@@ -34,7 +34,7 @@ class UsersGetCommand implements ChatCommand
      */
     public function execute($username) {
         $payload = [];
-        if (count($this->arguments) > 0) {
+        if ($this->arguments[0] !== '') {
             $payload = [
                 'username' => $this->arguments[0],
             ];

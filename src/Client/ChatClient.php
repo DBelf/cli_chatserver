@@ -42,7 +42,7 @@ class ChatClient
         $result = json_decode($remote_request->post_to_endpoint('/users', $payload), true);
         fclose($handle);
         if (!$result['ok']) {
-            echo $result['error'];
+            echo $result['error'] . PHP_EOL;
             return false;
         }
         $this->username = $result['username'];
@@ -60,8 +60,18 @@ class ChatClient
         $messages = $this->construct_messages_list($result['messages']);
         foreach ($messages as $message) {
             $message->display();
+            $this->server_delete_unread($message->get_id(), $remote_request);
         }
         return true;
+    }
+
+    /**
+     * @param $message_id
+     * @param $remote_request RemoteRequest
+     */
+    private function server_delete_unread($message_id, $remote_request) {
+        $payload = ['message_id' => $message_id];
+        $remote_request->delete_from_endpoint('/unread', $payload);
     }
 
     private function construct_messages_list($result) {

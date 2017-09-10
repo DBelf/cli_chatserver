@@ -18,7 +18,7 @@ use function sprintf;
 class UsersUpdateCommand implements ChatCommand
 {
     private $remote_request;
-    private $arguments;
+    public $arguments;
 
     /**
      * UsersUpdateCommand constructor.
@@ -35,7 +35,7 @@ class UsersUpdateCommand implements ChatCommand
      * @return mixed
      */
     public function execute($username) {
-        if (count($this->arguments) !== 1) {
+        if ($this->arguments[0] === '') {
             echo 'Need a username to update!' . PHP_EOL;
             return false;
         }
@@ -51,5 +51,4 @@ class UsersUpdateCommand implements ChatCommand
         echo sprintf('Username successfully updated to %s!', $this->arguments[0]) . PHP_EOL;
         return true;
     }
-
 }

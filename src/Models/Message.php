@@ -12,6 +12,7 @@
 
 namespace ChatApplication\Models;
 
+use DateTime;
 use const PHP_EOL;
 use function sprintf;
 
@@ -26,7 +27,7 @@ class Message implements Model
      */
     private $sender_name;
     /**
-     * @var integer
+     * @var DateTime
      */
     private $timestamp;
     /**
@@ -62,8 +63,7 @@ class Message implements Model
         return $array;
     }
 
-    //TODO: get time formatted.
     public function display() {
-        echo sprintf('%s[%d]: %s' . PHP_EOL, $this->sender_name, $this->timestamp, $this->body);
+        echo sprintf('%s[%s]: %s' . PHP_EOL, $this->sender_name, $this->timestamp, $this->body);
     }
 }

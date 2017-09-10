@@ -48,7 +48,7 @@ class UsersUpdateCommandTest extends TestCase
 
     /** @test */
     public function it_displays_a_message_if_incorrect_number_of_arguments_provided() {
-        $arguments = [];
+        $arguments = [''];
         $message_send_command = new UsersUpdateCommand($this->remote_request, $arguments);
         $this->assertFalse($message_send_command->execute('Robert'));
         $this->expectOutputRegex('/Need a username to update!/');

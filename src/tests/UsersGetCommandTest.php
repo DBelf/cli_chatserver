@@ -33,16 +33,15 @@ class UsersGetCommandTest extends TestCase
 
     /** @test */
     public function it_displays_the_information_of_a_single_user() {
-        $arguments = ['Bob'];
+        $arguments = ['Bob', ''];
         $message_send_command = new UsersGetCommand($this->remote_request, $arguments);
         $this->assertTrue($message_send_command->execute('Jill'));
         $this->expectOutputRegex('/Bob: 1/');
     }
 
-
     /** @test */
     public function it_displays_the_information_of_all_users() {
-        $arguments = [];
+        $arguments = ['', ''];
         $message_send_command = new UsersGetCommand($this->remote_request, $arguments);
         $this->assertTrue($message_send_command->execute('Jill'));
         $this->expectOutputRegex('/Bob: 1[\r\n|\n]+Jill: 2[\r\n|\n]+Carl: 3/');
@@ -50,7 +49,7 @@ class UsersGetCommandTest extends TestCase
 
     /** @test */
     public function it_displays_a_message_if_username_doesnt_exist_in_database() {
-        $arguments = ['Robert'];
+        $arguments = ['Robert', ''];
         $message_send_command = new UsersGetCommand($this->remote_request, $arguments);
         $this->assertFalse($message_send_command->execute('Jill'));
         $this->expectOutputRegex('/Username doesn\'t exist!/');

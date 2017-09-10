@@ -35,6 +35,7 @@ class InputParserTest extends TestCase
     public function it_can_parse_message_send_commands() {
         $message_send_command = $this->input_parser->parse('message send username body');
         $this->assertInstanceOf(MessageSendCommand::class, $message_send_command);
+        $this->assertAttributeCount(2, 'arguments', $message_send_command);
         $this->assertAttributeContains('username', 'arguments', $message_send_command);
         $this->assertAttributeContains('body', 'arguments', $message_send_command);
     }

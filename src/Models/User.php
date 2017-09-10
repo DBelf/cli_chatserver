@@ -44,6 +44,9 @@ class User implements Model
         return $array;
     }
 
+    /**
+     * Echoes the user data on std out.
+     */
     public function display() {
         echo sprintf('%s: %d' . PHP_EOL, $this->username, $this->id);
     }
