@@ -1,6 +1,6 @@
 <?php
 /**
- * Tests the InputParser.
+ * Tests the InputParser. @see InputParser
  *
  * An InputParser should parse the commands from the input.
  * An InputParser should construct the corresponding ChatCommand if it exists.

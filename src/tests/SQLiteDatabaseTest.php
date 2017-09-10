@@ -1,8 +1,10 @@
 <?php
 /**
- * Short description for file
+ * Tests the SQLiteDatabase. @see SQLiteDatabase
  *
- * Long description for file (if any)...
+ * A SQLiteDatabase should initialze the database with three tables if they don't exist.
+ * A SQLiteDatabase should return the id of the last inserted row.
+ * A SQLiteDatabase can execute insert, select, update and delete queries and return the result of the query.
  *
  * @package    bunq_assignment
  * @author     Dimitri
@@ -34,61 +36,73 @@ class SQLiteDatabaseTest extends TestCase
 
     /** @test */
     public function it_can_initialize_a_db_with_three_tables() {
+        //Arrange.
         $base_statement = 'SELECT Count(*) FROM sqlite_master WHERE type=\'table\'';
-        $result = $this->db->query($base_statement)->fetchColumn()[0];
-        //Assert on 4 because sqlite_sequence is also returned.
+        //execute the query.
+        $result = $this->db->query($base_statement)->fetchColumn(0);
+        //Assert on 4 Tables because sqlite_sequence is also returned.
         $this->assertEquals(4, $result);
     }
 
     /** @test */
     public function it_can_return_the_id_of_the_last_insert() {
+        //Assert.
         $this->assertEquals(0, $this->db->get_last_insert_id());
     }
 
     /** @test */
     public function it_can_execute_an_insert_query() {
+        //Arrange the query.
         $base_statement = 'INSERT INTO Users (username) VALUES(:username)';
         $count_statement = 'SELECT Count(*) FROM Users';
         $argument = ['username' => 'Bob'];
-        $prev_state = $this->db->query($count_statement)->fetchColumn()[0];
+        $prev_state = $this->db->query($count_statement)->fetchColumn(0);
+        //Execute the query.
         $this->db->query($base_statement, $argument);
-        $new_state = $this->db->query($count_statement)->fetchColumn()[0];
+        $new_state = $this->db->query($count_statement)->fetchColumn(0);
+        //Assert a row was added to the database.
         $this->assertEquals($prev_state + 1, $new_state);
     }
 
     /** @test */
     public function it_can_execute_a_select_query() {
+        //Arrange the query.
         $base_statement = 'SELECT * FROM Users WHERE username = :username';
         $argument = ['username' => 'Bob'];
+        //Execute the query.
         $result = $this->db->query($base_statement, $argument)->fetchAll();
+        //Assert the select statement returns the correct values.
         $this->assertEquals(1, $result[0]['id']);
         $this->assertEquals('Bob', $result[0]['username']);
     }
 
     /** @test */
     public function it_can_execute_an_update_query() {
+        //Arrange the query.
         $base_statement = 'UPDATE Users SET username = :new_username WHERE username = :username';
         $arguments = [
             'new_username' => 'Robert',
             'username' => 'Bob'
         ];
+        //Execute the query.
         $this->db->query($base_statement, $arguments);
-
+        //Assert the new username exists.
         $result = $this->db->query('SELECT Count(*) FROM Users WHERE username = \'Robert\'')->fetchColumn();
         $this->assertEquals(1, $result[0]);
-
+        //Assert the old username doesn't exist anymore.
         $result = $this->db->query('SELECT Count(*) FROM Users WHERE username = \'Bob\'')->fetchColumn();
         $this->assertEquals(0, $result[0]);
     }
 
     /** @test */
     public function it_can_execute_a_delete_query() {
+        //Arrange the query.
         $base_statement = 'DELETE FROM Users WHERE username = :username';
         $argument = ['username' => 'Robert'];
-
+        //Execute the query.
         $this->db->query($base_statement, $argument);
         $result = $this->db->query('SELECT Count(*) FROM Users')->fetchColumn();
-
+        //Assert whether the Users table is empty.
         $this->assertEquals(0, $result[0]);
     }
 

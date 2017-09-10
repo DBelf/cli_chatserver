@@ -1,6 +1,6 @@
 <?php
 /**
- * Tests the ChatClient.
+ * Tests the ChatClient. @see ChatClient.
  *
  * It should be able to prompt a user for a unique username.
  * Notifies the user if the selected name isn't unique.
@@ -74,7 +74,7 @@ class ChatClientTest extends TestCase
         $this->assertTrue($chat_client->poll_for_unread_messages($this->remote_request));
         //Arrange
         $dbh = new SQLiteDatabase(__DIR__ . '/../../database/chat_server.db');
-        $unread_count = $dbh->query('SELECT COUNT(*) FROM Unread', [])->fetchColumn()[0];
+        $unread_count = $dbh->query('SELECT COUNT(*) FROM Unread', [])->fetchColumn(0);
         $dbh = null;
         //Assert no messages are left in the unread table.
         $this->assertEquals(0, $unread_count);

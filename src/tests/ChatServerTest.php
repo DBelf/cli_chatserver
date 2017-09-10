@@ -1,6 +1,6 @@
 <?php
 /**
- * Tests the ChatServer.
+ * Tests the ChatServer. @see ChatServer
  *
  * The ChatServer should reply with 200 status code on correct requests.
  * The ChatServer should construct the correct controller and call the corresponding method on a correct request.

@@ -1,6 +1,6 @@
 <?php
 /**
- * Tests MessagesController.
+ * Tests the MessagesController. @see MessagesController
  *
  * A MessagesController should add the new message to the Messages and Unread tables.
  * A MessagesController should only have the put and get verbs implemented.
@@ -52,13 +52,13 @@ class MessagesControllerTest extends TestCase
             'receiver_name' => 'Jill',
             'body' => 'Hello!'
         ];
-        $message_count = $this->db->query("SELECT Count(*) FROM Messages")->fetchColumn()[0];
-        $unread_count = $this->db->query("SELECT Count(*) FROM Unread")->fetchColumn()[0];
+        $message_count = $this->db->query("SELECT Count(*) FROM Messages")->fetchColumn(0);
+        $unread_count = $this->db->query("SELECT Count(*) FROM Unread")->fetchColumn(0);
         //Invoke the post method.
         $this->messages_controller->post($arguments);
         //Arrange the updated message count.
-        $new_message_count = $this->db->query("SELECT Count(*) FROM Messages")->fetchColumn()[0];
-        $new_unread_count = $this->db->query("SELECT Count(*) FROM Unread")->fetchColumn()[0];
+        $new_message_count = $this->db->query("SELECT Count(*) FROM Messages")->fetchColumn(0);
+        $new_unread_count = $this->db->query("SELECT Count(*) FROM Unread")->fetchColumn(0);
         //Assert a success response and whether the message has been added to successfully to both tables.
         $this->assertTrue($this->messages_controller->get_result_array()['ok']);
         $this->assertEquals($message_count + 1, $new_message_count);
