@@ -1,8 +1,8 @@
 <?php
 /**
  * Used by a CLIChatClientApp to parse user input into commands and arguments for the commands.
- *
- * Long description for file (if any)...
+ * New ChatCommands can be added in the ChatCommands namespace and they should automatically be processed by the
+ * InputParser.
  *
  * @package    bunq_assignment
  * @author     Dimitri
@@ -31,13 +31,20 @@ class InputParser
     }
 
     /**
-     * @param $input
+     * Parses the input.
+     * Input should always have a class, all other parts of the input are optional.
+     * If the class or class + action combination does not match a defined class, an UnknownCommand
+     * is returned.
+     * Otherwise the corresponding ChatCommand is returned. @see ChatCommand implementations.
+     *
+     * @param string $input
      * @return ChatCommand
      */
     public function parse($input) {
         preg_match($this->pattern, $input, $matches);
         $command = ucfirst(strtolower($matches['class'])) . ucfirst(strtolower($matches['action']));
         $arguments = [$matches['argument1'], $matches['rest']];
+        //Construct the correct classpath and name so it can be autoloaded.
         $command_class = $this->command_namespace . $command . 'Command';
         if (class_exists($command_class)) {
             return new $command_class($this->remote_request, $arguments);

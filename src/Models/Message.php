@@ -49,10 +49,17 @@ class Message implements Model
         $this->body = $body;
     }
 
+    /**
+     * @return int
+     */
     public function get_id() {
         return $this->message_id;
     }
 
+    /**
+     * Converts a Message object to a key, value array.
+     * @return array
+     */
     public function to_array() {
         $array = [
             'message_id' => $this->message_id,
@@ -63,7 +70,7 @@ class Message implements Model
         return $array;
     }
 
-    public function display() {
-        echo sprintf('%s[%s]: %s' . PHP_EOL, $this->sender_name, $this->timestamp, $this->body);
+    public function __toString() {
+        return sprintf('%s[%s]: %s' . PHP_EOL, $this->sender_name, $this->timestamp, $this->body);
     }
 }

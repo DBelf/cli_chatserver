@@ -1,8 +1,7 @@
 <?php
 /**
- * Short description for file
- *
- * Long description for file (if any)...
+ * cURL wrapper used to construct Client side requests to the server.
+ * Each request is sent to the index.php page of the server.
  *
  * @package    bunq_assignment
  * @author     Dimitri
@@ -28,11 +27,11 @@ class RemoteRequest
     }
 
     /**
-     * Creates a GET request and uses PHP's curl library to send the request to the given address and endpoint.
+     * Creates a GET request and uses PHP's cURL library to send the request to the given address and endpoint.
      *
      * @param $endpoint string the endpoint of the request that should be made.
-     * @param string $payload the string encoded json object which can be added to the request, optional.
-     * @return string the result if the request was successful or a boolean false if the request was unsuccessful.
+     * @param array $payload the unencoded key,value array which can be added to the request, optional.
+     * @return string $response the result json string of the result.
      */
     public function get_from_endpoint($endpoint, $payload = []) {
         $ch = curl_init();
@@ -46,6 +45,13 @@ class RemoteRequest
         return $response;
     }
 
+    /**
+     * Creates a POST request and uses PHP's cURL library to send the request to the given address and endpoint.
+     *
+     * @param $endpoint string the endpoint of the request that should be made.
+     * @param array $payload the unencoded key,value array which can be added to the request, optional.
+     * @return string $response the result json string of the result.
+     */
     public function post_to_endpoint($endpoint, $payload = []) {
         $ch = curl_init();
         curl_setopt($ch, CURLOPT_URL,
@@ -59,6 +65,13 @@ class RemoteRequest
         return $response;
     }
 
+    /**
+     * Creates a PUT request and uses PHP's cURL library to send the request to the given address and endpoint.
+     *
+     * @param $endpoint string the endpoint of the request that should be made.
+     * @param array $payload the unencoded key,value array which can be added to the request, optional.
+     * @return string $response the result json string of the result.
+     */
     public function put_on_endpoint($endpoint, $payload = []) {
         $ch = curl_init();
         curl_setopt($ch, CURLOPT_URL,
@@ -71,6 +84,13 @@ class RemoteRequest
         return $response;
     }
 
+    /**
+     * Creates a DELETE request and uses PHP's cURL library to send the request to the given address and endpoint.
+     *
+     * @param $endpoint string the endpoint of the request that should be made.
+     * @param array $payload the unencoded key,value array which can be added to the request, optional.
+     * @return string $response the result json string of the result.
+     */
     public function delete_from_endpoint($endpoint, $payload = []) {
         $ch = curl_init();
         curl_setopt($ch, CURLOPT_URL,

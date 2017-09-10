@@ -1,15 +1,17 @@
 <?php
+
+use ChatApplication\Client\CLIChatClientApp;
+
 /**
- * Short description for file
- *
- * Long description for file (if any)...
+ * Unknown command.
+ * Used by the CLIChatClientApp to notify the user that their command was not recognized.
+ * @see CLIChatClientApp.
  *
  * @package    bunq_assignment
  * @author     Dimitri
  */
 
 namespace ChatApplication\Client\ChatCommands;
-
 
 use function sprintf;
 
@@ -26,8 +28,10 @@ class UnknownCommand implements ChatCommand
     }
 
     /**
+     * Displays the error.
+     *
      * @param $username
-     * @return mixed
+     * @return void
      */
     public function execute($username) {
         echo sprintf("Command %s not supported!" . PHP_EOL, $this->argument);

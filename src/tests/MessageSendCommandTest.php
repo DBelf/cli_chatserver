@@ -43,7 +43,7 @@ class MessageSendCommandTest extends TestCase
         $arguments = ['Bob'];
         $message_send_command = new MessageSendCommand($this->remote_request, $arguments);
         $this->assertFalse($message_send_command->execute('Jill'));
-        $this->expectOutputRegex('/Need a username and a body to send a message!/');
+        $this->expectOutputRegex('/Need a username and body to send a message!/');
     }
 
     /** @test */

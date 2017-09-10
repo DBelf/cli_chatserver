@@ -3,8 +3,8 @@
  * User model.
  *
  * User models are wrappers for the information of one user.
- * User objects are used by the MessageController to transform the data to arrays @see MessagesController.
- * User objects are used by the ChatClient to display the message @see ChatClient.
+ * User objects are used by the UsersController to transform the data to arrays @see MessagesController.
+ * User objects are used by the ChatClient to display the users @see ChatClient.
  *
  * @package    bunq_assignment
  * @author     Dimitri
@@ -36,6 +36,10 @@ class User implements Model
         $this->username = $username;
     }
 
+    /**
+     * Converts a User object to a key, value array.
+     * @return array
+     */
     public function to_array() {
         $array = [
             'id' => $this->id,
@@ -44,10 +48,7 @@ class User implements Model
         return $array;
     }
 
-    /**
-     * Echoes the user data on std out.
-     */
-    public function display() {
-        echo sprintf('%s: %d' . PHP_EOL, $this->username, $this->id);
+    public function __toString() {
+        return sprintf('%s: %d' . PHP_EOL, $this->username, $this->id);
     }
 }

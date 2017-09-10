@@ -1,8 +1,8 @@
 <?php
 /**
- * Short description for file
+ * ChatCommand interface.
  *
- * Long description for file (if any)...
+ * ChatCommands are used by the CLIClient to execute the user input.
  *
  * @package    bunq_assignment
  * @author     Dimitri

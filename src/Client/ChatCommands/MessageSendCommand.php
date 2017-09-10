@@ -1,15 +1,13 @@
 <?php
 /**
- * Short description for file
- *
- * Long description for file (if any)...
+ * Sends a message to the server.
+ * Each message has a recipient and a sender.
  *
  * @package    bunq_assignment
  * @author     Dimitri
  */
 
 namespace ChatApplication\Client\ChatCommands;
-
 
 use ChatApplication\Client\RemoteRequest;
 use const PHP_EOL;
@@ -30,12 +28,15 @@ class MessageSendCommand implements ChatCommand
     }
 
     /**
+     * Executes the command and sends a request to the server to add the message to Messages and Unread table.
+     * A message body and recipient are necessary.
+     *
      * @param $username
-     * @return mixed
+     * @return boolean true if sending the message was successful, false if sending failed.
      */
     public function execute($username) {
         if (count($this->arguments) !== 2) {
-            echo 'Need a username and a body to send a message!' . PHP_EOL;
+            echo 'Need a username and body to send a message!' . PHP_EOL;
             return false;
         }
         $payload = [
@@ -43,7 +44,9 @@ class MessageSendCommand implements ChatCommand
             'receiver_name' => $this->arguments[0],
             'body' => $this->arguments[1]
         ];
+        //Decodes the server response.
         $result = json_decode($this->remote_request->post_to_endpoint('/messages', $payload), true);
+        //Displays the error if anything went wrong.
         if (!$result['ok']) {
             echo $result['error'] . PHP_EOL;
             return false;

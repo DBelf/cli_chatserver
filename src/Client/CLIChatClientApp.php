@@ -1,5 +1,4 @@
 <?php
-
 /**
  * The main execution loop of the CLI client chat application.
  *
@@ -44,6 +43,12 @@ class CLIChatClientApp
      */
     private $input_stream;
 
+    /**
+     * CLIChatClientApp constructor.
+     * @param $server_address
+     * @param $server_port
+     * @param string $input_stream
+     */
     public function __construct($server_address, $server_port, $input_stream = 'php://stdin') {
         $this->remote_request = new RemoteRequest($server_address, $server_port);
         $this->input_parser = new InputParser($this->remote_request);
@@ -90,6 +95,7 @@ class CLIChatClientApp
     }
 }
 
+//Need exactly two arguments to work.
 if (count($argv) !== 3) {
     echo 'Need both the server name and server port to initialize a chat client app.' . PHP_EOL;
     echo 'Example use: php CLIChatClientApp.php \<servername\> \<serverport\>' . PHP_EOL;
