@@ -154,7 +154,7 @@ class UsersControllerTest extends TestCase
 
     //Removes the database file to ensure predictable tests.
     public static function tearDownAfterClass() {
-        $file = __DIR__ . '\test_users_controller.db';
+        $file = __DIR__ . '/test_users_controller.db';
         unlink($file);
     }
 }

@@ -18,7 +18,7 @@ define('WEB_SERVER_PORT', 8001);
 //UNIX command 'php -S %s:%d -t %s >/dev/null 2>&1 & echo $!'
 
 $command = sprintf(
-    'START /MIN php -S %s:%d -t %s > null 2>&1 ',
+    'php -S %s:%d -t %s >/dev/null 2>&1 & echo $!',
     WEB_SERVER_HOST,
     WEB_SERVER_PORT,
     realpath(__DIR__ . '/../resources/')
@@ -40,5 +40,5 @@ echo sprintf(
 // Kill the web server when the process ends
 register_shutdown_function(function() use ($pid) {
     echo sprintf('%s - Killing process with ID %d', date('r'), $pid) . PHP_EOL;
-    exec('kill ' . $pid); //FIXME have to manually kill this in Windows.
+    exec('kill ' . $pid);
 });

@@ -113,7 +113,7 @@ class MessagesControllerTest extends TestCase
 
     //Removes the database file to ensure predictable tests.
     public static function tearDownAfterClass() {
-        $file = __DIR__ . '\test_messages_controller.db';
+        $file = __DIR__ . '/test_messages_controller.db';
         unlink($file);
     }
 }
