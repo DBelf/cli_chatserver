@@ -4,7 +4,7 @@
  * Chatclients can also poll the server for new unread messages.
  *
  * ChatClient objects are used by the CLIChatClientApp. @see CLIChatClientApp
- * @package    bunq_assignment
+ * @package    chat_server
  * @author     Dimitri
  */
 

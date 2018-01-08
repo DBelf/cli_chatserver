@@ -3,7 +3,7 @@
  * cURL wrapper used to construct Client side requests to the server.
  * Each request is sent to the index.php page of the server.
  *
- * @package    bunq_assignment
+ * @package    chat_server
  * @author     Dimitri
  */
 

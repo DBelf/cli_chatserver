@@ -3,7 +3,7 @@
  * Sends a message to the server.
  * Each message has a recipient and a sender.
  *
- * @package    bunq_assignment
+ * @package    chat_server
  * @author     Dimitri
  */
 

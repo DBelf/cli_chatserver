@@ -11,7 +11,7 @@
  * The put verb will update the row of the user with the corresponding username in the Users table..
  * The delete verb will remove the row of the user with the corresponding username from the Users table.
  *
- * @package    bunq_assignment
+ * @package    chat_server
  * @author     Dimitri
  */
 

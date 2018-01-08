@@ -6,7 +6,7 @@
  * The ChatServer should construct the correct controller and call the corresponding method on a correct request.
  * The ChatServer sends a 404 response on incorrect requests.
  *
- * @package    bunq_assignment
+ * @package    chat_server
  * @author     Dimitri
  */
 

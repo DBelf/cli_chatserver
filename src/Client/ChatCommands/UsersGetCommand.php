@@ -4,7 +4,7 @@
  * If the arguments array contains empty strings, all users will be retrieved.
  * Otherwise the information of the username specified in the first element of the arguments array is retrieved.
  *
- * @package    bunq_assignment
+ * @package    chat_server
  * @author     Dimitri
  */
 

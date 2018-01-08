@@ -6,7 +6,7 @@
  * An InputParser should construct the corresponding ChatCommand if it exists.
  * An InputParser should constrcut the UnknownCommand if the command does not exist.
  *
- * @package    bunq_assignment
+ * @package    chat_server
  * @author     Dimitri
  */
 

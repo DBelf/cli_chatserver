@@ -3,7 +3,7 @@
  * An SQLite PDO wrapper, used by Controllers to query the database.
  * @see Controller and the implementations.
  *
- * @package    bunq_assignment
+ * @package    chat_server
  * @author     Dimitri
  */
 

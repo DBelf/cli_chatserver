@@ -4,7 +4,7 @@
  * New ChatCommands can be added in the ChatCommands namespace and they should automatically be processed by the
  * InputParser.
  *
- * @package    bunq_assignment
+ * @package    chat_server
  * @author     Dimitri
  */
 

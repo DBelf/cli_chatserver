@@ -4,7 +4,7 @@
  *
  * ChatCommands are used by the CLIClient to execute the user input.
  *
- * @package    bunq_assignment
+ * @package    chat_server
  * @author     Dimitri
  */
 

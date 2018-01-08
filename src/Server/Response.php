@@ -5,7 +5,7 @@
  * The server uses the Response wrapper to set the HTTP status of the response and
  * echo the data encoded in a JSON string back to the client.
  *
- * @package    bunq_assignment
+ * @package    chat_server
  * @author     Dimitri
  */
 

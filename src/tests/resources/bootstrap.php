@@ -6,7 +6,7 @@
  *
  * Based off @link http://tech.vg.no/2013/07/19/using-phps-built-in-web-server-in-your-test-suites/
  *
- * @package    bunq_assignment
+ * @package    chat_server
  * @author     Dimitri
  */
 

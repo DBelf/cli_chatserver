@@ -14,7 +14,7 @@
  * Because the functionality of both HTTP verbs is reliant on the Unread table, this Controller can also
  * query the Unread table.
  *
- * @package    bunq_assignment
+ * @package    chat_server
  * @author     Dimitri
  */
 

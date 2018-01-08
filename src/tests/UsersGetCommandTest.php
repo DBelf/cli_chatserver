@@ -5,7 +5,7 @@
  * A UsersGetCommand can send a get a request to the server.
  * A UsersGetCommand can display errors if anything went wrong.
  *
- * @package    bunq_assignment
+ * @package    chat_server
  * @author     Dimitri
  */
 

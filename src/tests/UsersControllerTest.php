@@ -9,7 +9,7 @@
  * A UsersController should only have all HTTP verbs implemented.
  * A UsersController fails when the arguments are incorrect.
  *
- * @package    bunq_assignment
+ * @package    chat_server
  * @author     Dimitri
  */
 

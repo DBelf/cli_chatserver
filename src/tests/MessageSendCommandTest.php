@@ -5,7 +5,7 @@
  * A MessageSendCommand can send a post request to the server.
  * A MessageSendCommand can display errors if anything went wrong.
  *
- * @package    bunq_assignment
+ * @package    chat_server
  * @author     Dimitri
  */
 

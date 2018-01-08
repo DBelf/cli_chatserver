@@ -9,7 +9,7 @@
  * if any messages are found it should also request the server remove the displayed messages
  * from the Unread table.
  *
- * @package    bunq_assignment
+ * @package    chat_server
  * @author     Dimitri
  */
 

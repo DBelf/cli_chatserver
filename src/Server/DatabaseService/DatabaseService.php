@@ -3,7 +3,7 @@
  * Interface of the DatabaseServices.
  * Concrete DatabaseServices are PDO wrappers with different database types.
  *
- * @package    bunq_assignment
+ * @package    chat_server
  * @author     Dimitri
  */
 

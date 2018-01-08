@@ -5,7 +5,7 @@
  * Controllers can convert the results of queries to arrays to make the transportation of data
  * more straightforward.
  *
- * @package    bunq_assignment
+ * @package    chat_server
  * @author     Dimitri
  */
 

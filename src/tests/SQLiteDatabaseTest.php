@@ -6,7 +6,7 @@
  * A SQLiteDatabase should return the id of the last inserted row.
  * A SQLiteDatabase can execute insert, select, update and delete queries and return the result of the query.
  *
- * @package    bunq_assignment
+ * @package    chat_server
  * @author     Dimitri
  */
 

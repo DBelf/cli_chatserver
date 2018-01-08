@@ -10,7 +10,7 @@
  * If the query was unsuccessful, the ok value of the response array will be set to false and
  * an error element will be added with a message containing the error message.
  *
- * @package    bunq_assignment
+ * @package    chat_server
  * @author     Dimitri
  */
 

@@ -3,7 +3,7 @@
  * Interface for the data model objects which can be retrieved from the database.
  *
  * Data models can convert their properties to arrays.
- * @package    bunq_assignment
+ * @package    chat_server
  * @author     Dimitri
  */
 

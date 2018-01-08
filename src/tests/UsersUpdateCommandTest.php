@@ -5,7 +5,7 @@
  * A UsersUpdateCommand can send a put a request to the server.
  * A UsersUpdateCommand can display errors if anything went wrong.
  *
- * @package    bunq_assignment
+ * @package    chat_server
  * @author     Dimitri
  */
 

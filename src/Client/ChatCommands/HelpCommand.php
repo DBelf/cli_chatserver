@@ -2,7 +2,7 @@
 /**
  * Displays the available commands for a user.
  *
- * @package    bunq_assignment
+ * @package    chat_server
  * @author     Dimitri
  */
 

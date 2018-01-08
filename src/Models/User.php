@@ -6,7 +6,7 @@
  * User objects are used by the UsersController to transform the data to arrays @see MessagesController.
  * User objects are used by the ChatClient to display the users @see ChatClient.
  *
- * @package    bunq_assignment
+ * @package    chat_server
  * @author     Dimitri
  */
 

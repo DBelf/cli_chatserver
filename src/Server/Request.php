@@ -4,7 +4,7 @@
  *
  * The server uses a request to load the Controller and add the request payload to the method invoked on the controller.
  *
- * @package    bunq_assignment
+ * @package    chat_server
  * @author     Dimitri
  */
 

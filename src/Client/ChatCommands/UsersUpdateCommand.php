@@ -3,7 +3,7 @@
  * Sends a request to the server to update the username of the user.
  * Fails if the new username already exists.
  *
- * @package    bunq_assignment
+ * @package    chat_server
  * @author     Dimitri
  */
 

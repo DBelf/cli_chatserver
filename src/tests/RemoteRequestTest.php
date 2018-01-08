@@ -7,7 +7,7 @@
  * Used in combination with the index.php page which can be found in the resources folder.
  * The index.php page echoes the request details back.
  *
- * @package    bunq_assignment
+ * @package    chat_server
  * @author     Dimitri
  */
 

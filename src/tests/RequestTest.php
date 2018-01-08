@@ -5,7 +5,7 @@
  * A request should parse the endpoint and verb and decide where it should read the request payload from depending
  * on the verb.
  *
- * @package    bunq_assignment
+ * @package    chat_server
  * @author     Dimitri
  */
 

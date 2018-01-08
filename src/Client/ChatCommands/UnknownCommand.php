@@ -7,7 +7,7 @@ use ChatApplication\Client\CLIChatClientApp;
  * Used by the CLIChatClientApp to notify the user that their command was not recognized.
  * @see CLIChatClientApp.
  *
- * @package    bunq_assignment
+ * @package    chat_server
  * @author     Dimitri
  */
 

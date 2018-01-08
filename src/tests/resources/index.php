@@ -6,7 +6,7 @@
  * The index returns the request information to verify the correctness of the implementation of
  * the RemoteRequest.php class.
  *
- * @package    bunq_assignment
+ * @package    chat_server
  * @author     Dimitri
  */
 

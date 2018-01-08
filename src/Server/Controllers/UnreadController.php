@@ -7,7 +7,7 @@
  *
  * The delete verb will delete the row of the unread message from the Unread table.
  *
- * @package    bunq_assignment
+ * @package    chat_server
  * @author     Dimitri
  */
 

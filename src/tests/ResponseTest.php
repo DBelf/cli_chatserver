@@ -5,7 +5,7 @@
  * Responses are wrappers for HTTP responses with status codes and a payload.
  * They return their payload as a string.
  *
- * @package    bunq_assignment
+ * @package    chat_server
  * @author     Dimitri
  */
 

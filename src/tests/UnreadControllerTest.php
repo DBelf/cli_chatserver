@@ -5,7 +5,7 @@
  * An UnreadController should delete the row from the unread table corresponding to the message id.
  * An UnreadController should only have the delete verb implemented.
  *
- * @package    bunq_assignment
+ * @package    chat_server
  * @author     Dimitri
  */
 

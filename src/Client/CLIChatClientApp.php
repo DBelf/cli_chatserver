@@ -13,7 +13,7 @@
  *  - the address of the server
  *  - the port of the server
  *
- * @package    bunq_assignment
+ * @package    chat_server
  * @author     Dimitri
  */
 

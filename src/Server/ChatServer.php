@@ -3,7 +3,7 @@
  * A ChatServer is in charge of "routing" the request and payload to the corresponding Controller.
  * A ChatServer will relay a response back to the client with an HTTP status code.
  *
- * @package    bunq_assignment
+ * @package    chat_server
  * @author     Dimitri
  */
 

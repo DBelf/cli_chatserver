@@ -6,7 +6,7 @@
  * Message objects are used by the MessageController to transform the data to arrays @see MessagesController.
  * Messages objects used by the ChatClient to display the message @see ChatClient.
  *
- * @package    bunq_assignment
+ * @package    chat_server
  * @author     Dimitri
  */
 
